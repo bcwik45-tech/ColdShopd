@@ -40,7 +40,7 @@ E_RED = "<:redengine:1460317809925029999>"
 E_KEYSER = "<:keyser:1460317939231363113>"
 E_FAMAS = "<:famas:1460318239723880559>"
 E_LUMIA = "<:lumia:1460318085381619753>"
-E_SERYX = "<:seryx:1500494525716631552>" # Użyte zastępczo z ID Seryx/Certyfikatu według dostarczonych linków
+E_SERYX = "<:seryx:1500494525716631552>"
 E_ECHO = "<:echofun:1507649865453273129>"
 E_AMBANI = "<:ambani:1460318202637844531>"
 E_K3 = "<:k3project:1488629802201120850>"
@@ -340,7 +340,7 @@ class ShopSelect(discord.ui.Select):
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
             await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
-        # --- OBSŁUGA CHEATÓW FIVE-M (CENY PODWYŻSZONE O 3 ZŁ) ---
+        # --- OBSŁUGA CHEATÓW FIVE-M ---
         elif product_name == "Red Engine":
             desc = (
                 "» **Ceny:**\n"
@@ -422,124 +422,4 @@ class ShopSelect(discord.ui.Select):
 
         elif product_name == "Lumia":
             desc = (
-                "» **Ceny:**\n"
-                f"> {E_LUMIA} **1 Day** ✖️ **€4.5 / 23zł**\n"
-                f"> {E_LUMIA} **7 Days** ✖️ **€8.5 / 40zł**\n"
-                f"> {E_LUMIA} **1 Month** ✖️ **€17 / 77zł**\n"
-                f"> {E_LUMIA} **Lifetime** ✖️ **€43 / 188zł**\n\n"
-                "» **Krótki Opis:**\n"
-                "> ✅ » Crash Everyone\n"
-                "> ✅ » Masa Troll Opcji\n"
-                "> ✅ » Gotowy do użycia\n"
-                "> ✅ » Kill Everyone oraz inne\n"
-                "> ✅ » Bypassy na antych$atach\n"
-                "> ✅ » Lazer Eyes"
-            )
-            embed = discord.Embed(title=f"LUMIA MENU {E_LUMIA}", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="Lumia - €4.5 / 23 zł", value="Lumia 1 Day", emoji=PE_LUMIA),
-                discord.SelectOption(label="Lumia - €8.5 / 40 zł", value="Lumia 7 Days", emoji=PE_LUMIA),
-                discord.SelectOption(label="Lumia - €17 / 77 zł", value="Lumia 1 Month", emoji=PE_LUMIA),
-                discord.SelectOption(label="Lumia - €43 / 188 zł", value="Lumia Lifetime", emoji=PE_LUMIA)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
-            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
-
-        elif product_name == "Seryx":
-            desc = (
-                "» **Ceny:**\n"
-                f"> {E_SERYX} **7 Days** ✖️ **€10 / 45zł**\n"
-                f"> {E_SERYX} **1 Month** ✖️ **€15 / 67zł**\n"
-                f"> {E_SERYX} **Lifetime** ✖️ **€26 / 113zł**\n\n"
-                "» **Krótki Opis:**\n"
-                "> ✅ » Wbudowany Sp00fer\n"
-                "> ✅ » Silent Aim & Aimbot\n"
-                "> ✅ » Freecam z Shoot Vehicle\n"
-                "> ✅ » Spawn Aut oraz Broni\n"
-                "> ✅ » Zrobiony pod PVP\n"
-                "> ✅ » Ładne Visualsy\n"
-                "> ✅ » Resource Stoper"
-            )
-            embed = discord.Embed(title=f"SERYX {E_SERYX}", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="Seryx - €10 / 45 zł", value="Seryx 7 Days", emoji=PE_SERYX),
-                discord.SelectOption(label="Seryx - €15 / 67 zł", value="Seryx 1 Month", emoji=PE_SERYX),
-                discord.SelectOption(label="Seryx - €26 / 113 zł", value="Seryx Lifetime", emoji=PE_SERYX)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
-            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
-
-        elif product_name == "Echo.fun":
-            desc = (
-                "» **Ceny:**\n"
-                f"> {E_ECHO} **7 Days** ✖️ **€5 / 23zł**\n"
-                f"> {E_ECHO} **1 Month** ✖️ **€13 / 57zł**\n"
-                f"> {E_ECHO} **Lifetime** ✖️ **€43 / 182zł**\n\n"
-                "» **Krótki Opis:**\n"
-                "> ✅ » 100% Niewykrywalne Hitboxy (Wszystkie serwery)\n"
-                "> ✅ » Niewykrywalny Silent Aim\n"
-                "> ✅ » Idealne pod Shootgg & Clowns\n"
-                "> ✅ » Idealne ESPY\n"
-                "> ✅ » Lua Executor\n"
-                "> ✅ » Prosty w konfiguracji"
-            )
-            embed = discord.Embed(title=f"ECHOFUN {E_ECHO}", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="Echo - €5 / 23 zł", value="Echo Weekly", emoji=PE_ECHO),
-                discord.SelectOption(label="Echo - €13 / 57 zł", value="Echo Monthly", emoji=PE_ECHO),
-                discord.SelectOption(label="Echo - €43 / 182 zł", value="Echo Lifetime", emoji=PE_ECHO)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
-            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
-
-        elif product_name == "Ambani":
-            desc = (
-                "» **Ceny:**\n"
-                f"> {E_AMBANI} **7 Days** ✖️ **€9.5 / 43zł**\n"
-                f"> {E_AMBANI} **1 Month** ✖️ **€14 / 63zł**\n"
-                f"> {E_AMBANI} **Lifetime** ✖️ **€33 / 143zł**\n\n"
-                "» **Krótki Opis:**\n"
-                "> ✅ » Dobry ESP\n"
-                "> ✅ » Troll Opcję\n"
-                "> ✅ » Kill Player\n"
-                "> ✅ » Kill Everyone i inne\n"
-                "> ✅ » Event Logger & Executor"
-            )
-            embed = discord.Embed(title=f"AMBANI {E_AMBANI}", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="Ambani - €9.5 / 43 zł", value="Ambani Weekly", emoji=PE_AMBANI),
-                discord.SelectOption(label="Ambani - €14 / 63 zł", value="Ambani Month", emoji=PE_AMBANI),
-                discord.SelectOption(label="Ambani - €33 / 143 zł", value="Ambani Lifetime", emoji=PE_AMBANI)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
-            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
-
-        elif product_name == "K3 Project":
-            desc = (
-                "» **Ceny:**\n"
-                f"> {E_K3} **7 Days** ✖️ **€5 / 23zł**\n"
-                f"> {E_K3} **1 Month** ✖️ **€9 / 39zł**\n"
-                f"> {E_K3} **3 Months** ✖️ **€17 / 75zł**\n"
-                f"> {E_K3} **Lifetime** ✖️ **€30 / 129zł**\n\n"
-                "» **Krótki Opis:**\n"
-                "> ✅ » External\n"
-                "> ✅ » Wbudowany Sp00fer\n"
-                "> ✅ » Jest niewykrywalny na Clowns.cool & ShootGG\n"
-                "> ✅ » Resources Stopper\n"
-                "> ✅ » Weapon Spawner"
-            )
-            embed = discord.Embed(title=f"K3 PROJECT {E_K3}", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="K3 - €5 / 23 zł", value="K3 7 Days", emoji=PE_K3),
-                discord.SelectOption(label="K3 - €9 / 39 zł", value="K3 1 Month", emoji=PE_K3),
-                discord.SelectOption(label="K3 - €17 / 75 zł", value="K3 3 Months", emoji=PE_K3),
-                discord.SelectOption(label="K3 - €30 / 129 zł", value="K3 Lifetime", emoji=PE_K3)
+                "
