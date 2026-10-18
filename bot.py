@@ -9,11 +9,10 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-DROP_CH = 1561325772587925514       # Kanał dropu
+DROP_CH = 1561325772587925514
 WELCOME_CH = 1557150071177347152   
-VERIFY_ROLE_ID = 1456459830494630102  # Rola weryfikacji
+VERIFY_ROLE_ID = 1456459830494630102
 
-# ID KATEGORII TICKETÓW
 CAT_OWNER = 1561333304131715112
 CAT_SUPPORT = 1539002224007712911
 
@@ -21,7 +20,6 @@ BANNER = "http://googleusercontent.com/generated_animated_image/1595904350087082
 CHEAT_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561373946010669137/a444a5e8-9b52-4784-a325-e81795221c2d.png"
 SPOOFER_BANNER = "https://cdn.discordapp.com/attachments/1541276042788864080/1561390239581339658/Szpiegowski_emblemat_SPOOFER.png"
 
-# STANDARDOWE EMOTKI / BUNDLE
 E_IPVANISH = "<:ipvanish:1561340558314709082>"
 E_FIVEM = "<:fivem:1561340614828621906>"
 E_CS2 = "<:cs2:1561340401523363892>"
@@ -29,7 +27,6 @@ E_DISCORD = "<:discord:1551370496199761942>"
 E_STEAM = "<:steam:1561340474349068338>"
 E_NEXHUB = "<:nexhub:1561341038441013368>"
 
-# EMOTKI DO CHEATÓW I SPOOFERÓW
 E_ECHO = "<:echofun:1561389082775388365>"
 E_AMBANI = "<:ambani:1561389373378011207>"
 E_WORM = "<:worm:1561389638088790108>"
@@ -55,7 +52,6 @@ class VeloxShopBot(commands.Bot):
 
 bot = VeloxShopBot()
 
-# --- AUTOMATYCZNE POWITANIA ---
 @bot.event
 async def on_member_join(member: discord.Member):
     ch = bot.get_channel(WELCOME_CH)
@@ -84,12 +80,11 @@ async def on_member_join(member: discord.Member):
 
     await ch.send(embed=embed)
 
-# --- WIDOKI I SYSTEM TICKETÓW ---
 class CloseView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="🔒 Zamknij", style=discord.ButtonStyle.danger, custom_id="close_t")
+    @discord.ui.button(label="Zamknij", style=discord.ButtonStyle.danger, emoji="🔒", custom_id="close_t")
     async def close(self, inter: discord.Interaction, btn: discord.ui.Button):
         await inter.response.send_message("Usuwanie ticketa za 3 sekundy...", ephemeral=True)
         await asyncio.sleep(3)
@@ -184,4 +179,42 @@ class TicketView(discord.ui.View):
     async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
         await self.create_ticket(inter, "Shop", "🛒")
 
-    @discord.ui.button(label="Owner", emoji="👑
+    @discord.ui.button(label="Owner", emoji="👑", style=discord.ButtonStyle.secondary, custom_id="t_owner")
+    async def owner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await self.create_ticket(inter, "Owner", "👑")
+
+    @discord.ui.button(label="Support", emoji="❓", style=discord.ButtonStyle.primary, custom_id="t_support")
+    async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await self.create_ticket(inter, "Support", "❓")
+
+    @discord.ui.button(label="Recruitment", emoji="📄", style=discord.ButtonStyle.danger, custom_id="t_recruitment")
+    async def recruit_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await self.create_ticket(inter, "Recruitment", "📄")
+
+    @discord.ui.button(label="Partnership", emoji="🤝", style=discord.ButtonStyle.secondary, custom_id="t_partnership")
+    async def partner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await self.create_ticket(inter, "Partnership", "🤝")
+
+class PurchaseSelect(discord.ui.Select):
+    def __init__(self, placeholder: str, options: list):
+        super().__init__(placeholder=placeholder, min_values=1, max_values=1, options=options)
+
+    async def callback(self, inter: discord.Interaction):
+        await inter.response.defer(ephemeral=True)
+        product_variant = self.values[0]
+        category = inter.guild.get_channel(CAT_SUPPORT)
+        ch = await inter.guild.create_text_channel(
+            name=f"🛒-ticket-{inter.user.name.lower()}",
+            category=category,
+            overwrites={
+                inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
+                inter.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
+            }
+        )
+        embed = discord.Embed(
+            title="Ticket: SHOP",
+            description=(
+                f"Witaj {inter.user.mention}!\n"
+                f"Otworzyłeś ticket zakupowy dla: **{product_variant}**.\n"
+                "Administracja wkrót
