@@ -19,13 +19,21 @@ CAT_SUPPORT = 1539002224007712911
 
 BANNER = "http://googleusercontent.com/generated_animated_image/15959043500870823950"
 
-# EMOTKI / NAKLEJKI SERWEROWE (FORMAT TEXT)
+# EMOTKI / NAKLEJKI SERWEROWE (FORMAT TEXT DO EMBEDÓW)
 E_IPVANISH = "<:ipvanish:1561340558314709082>"
 E_FIVEM = "<:fivem:1561340614828621906>"
 E_CS2 = "<:cs2:1561340401523363892>"
 E_DISCORD = "<:discord:1551370496199761942>"
 E_STEAM = "<:steam:1561340474349068338>"
 E_NEXHUB = "<:nexhub:1561341038441013368>"
+
+# PARTIAL EMOJI DO SELECT MENU (ŻEBY POKAZYWAŁO NAKLEJKI)
+PE_IPVANISH = discord.PartialEmoji(name="ipvanish", id=1561340558314709082)
+PE_FIVEM = discord.PartialEmoji(name="fivem", id=1561340614828621906)
+PE_CS2 = discord.PartialEmoji(name="cs2", id=1561340401523363892)
+PE_DISCORD = discord.PartialEmoji(name="discord", id=1551370496199761942)
+PE_STEAM = discord.PartialEmoji(name="steam", id=1561340474349068338)
+PE_NEXHUB = discord.PartialEmoji(name="nexhub", id=1561341038441013368)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -241,7 +249,7 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"IPVAN$SH {E_IPVANISH}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BANNER)
             
-            p_options = [discord.SelectOption(label="IP Vanish - €1 / 4.5 zł", value="IP Vanish - Year", description="Year", emoji="🛡️")]
+            p_options = [discord.SelectOption(label="IP Vanish - €1 / 4.5 zł", value="IP Vanish - Year", description="Year", emoji=PE_IPVANISH)]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
             await inter.response.send_message(embed=embed, view=v, ephemeral=True)
@@ -263,10 +271,10 @@ class ShopSelect(discord.ui.Select):
             embed.set_image(url=BANNER)
             
             p_options = [
-                discord.SelectOption(label="Nexhub - €1.7 / 7.5 zł", value="NexHub - 1 Day", description="1 Day", emoji="⚡"),
-                discord.SelectOption(label="Nexhub - €4.3 / 18.5 zł", value="NexHub - 7 Days", description="7 Days", emoji="⚡"),
-                discord.SelectOption(label="Nexhub - €8.6 / 37 zł", value="NexHub - Month", description="Month", emoji="⚡"),
-                discord.SelectOption(label="Nexhub - €17.3 / 74.5 zł", value="NexHub - 3 Months", description="3 Months", emoji="⚡")
+                discord.SelectOption(label="Nexhub - €1.7 / 7.5 zł", value="NexHub - 1 Day", description="1 Day", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €4.3 / 18.5 zł", value="NexHub - 7 Days", description="7 Days", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €8.6 / 37 zł", value="NexHub - Month", description="Month", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €17.3 / 74.5 zł", value="NexHub - 3 Months", description="3 Months", emoji=PE_NEXHUB)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
@@ -287,8 +295,8 @@ class ShopSelect(discord.ui.Select):
             embed.set_image(url=BANNER)
             
             p_options = [
-                discord.SelectOption(label="Zwykłe Bundle - €0.24 / 1.00zł", value="FiveM Zwykłe Bundle", description="Zwykłe Bundle", emoji="🎮"),
-                discord.SelectOption(label="Aged Bundle - €0.35 / 1.50zł", value="FiveM Aged Bundle", description="Aged Bundle", emoji="🎮")
+                discord.SelectOption(label="Zwykłe Bundle - €0.24 / 1.00zł", value="FiveM Zwykłe Bundle", description="Zwykłe Bundle", emoji=PE_FIVEM),
+                discord.SelectOption(label="Aged Bundle - €0.35 / 1.50zł", value="FiveM Aged Bundle", description="Aged Bundle", emoji=PE_FIVEM)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
@@ -308,8 +316,8 @@ class ShopSelect(discord.ui.Select):
             embed.set_image(url=BANNER)
             
             p_options = [
-                discord.SelectOption(label="Discord Bundle - €0.70 / 2.99 zł", value="Discord Bundle x3", description="3 acc Discord", emoji="💬"),
-                discord.SelectOption(label="Discord Bundle - €1.87 / 7.99 zł", value="Discord Bundle x10", description="10 acc Discord", emoji="💬")
+                discord.SelectOption(label="Discord Bundle - €0.70 / 2.99 zł", value="Discord Bundle x3", description="3 acc Discord", emoji=PE_DISCORD),
+                discord.SelectOption(label="Discord Bundle - €1.87 / 7.99 zł", value="Discord Bundle x10", description="10 acc Discord", emoji=PE_DISCORD)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
@@ -390,12 +398,12 @@ async def setup_tickets(inter: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def sb(inter: discord.Interaction):
     options = [
-        discord.SelectOption(label="FiveM Ready", value="FiveM Ready", description="See the price and open a ticket FiveM Ready.", emoji="🎮"),
-        discord.SelectOption(label="Steam", value="Steam", description="See the price and open a ticket Steam.", emoji="💨"),
-        discord.SelectOption(label="D1scörd", value="D1scörd", description="See the price and open a ticket D1scörd.", emoji="💬"),
-        discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", description="See the price and open a ticket CS2 Prime Accounts.", emoji="🎯"),
-        discord.SelectOption(label="IP Vanish", value="IP Vanish", description="See the price and open a ticket IP Vanish.", emoji="🛡️"),
-        discord.SelectOption(label="NexHub", value="NexHub", description="See the price and open a ticket NexHub.", emoji="⚡")
+        discord.SelectOption(label="FiveM Ready", value="FiveM Ready", description="See the price and open a ticket FiveM Ready.", emoji=PE_FIVEM),
+        discord.SelectOption(label="Steam", value="Steam", description="See the price and open a ticket Steam.", emoji=PE_STEAM),
+        discord.SelectOption(label="D1scörd", value="D1scörd", description="See the price and open a ticket D1scörd.", emoji=PE_DISCORD),
+        discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", description="See the price and open a ticket CS2 Prime Accounts.", emoji=PE_CS2),
+        discord.SelectOption(label="IP Vanish", value="IP Vanish", description="See the price and open a ticket IP Vanish.", emoji=PE_IPVANISH),
+        discord.SelectOption(label="NexHub", value="NexHub", description="See the price and open a ticket NexHub.", emoji=PE_NEXHUB)
     ]
     
     v = discord.ui.View(timeout=None)
@@ -423,8 +431,8 @@ async def sb(inter: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def svpn(inter: discord.Interaction):
     options = [
-        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", description="Year - €1 / 4.5 zł", emoji="🛡️"),
-        discord.SelectOption(label="NexHub", value="NexHub VPN", description="See the price and open a ticket NexHub.", emoji="⚡")
+        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", description="Year - €1 / 4.5 zł", emoji=PE_IPVANISH),
+        discord.SelectOption(label="NexHub", value="NexHub VPN", description="See the price and open a ticket NexHub.", emoji=PE_NEXHUB)
     ]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
@@ -446,7 +454,7 @@ async def svpn(inter: discord.Interaction):
 @bot.tree.command(name="setup_cs", description="Panel Counter-Strike 2")
 @app_commands.checks.has_permissions(administrator=True)
 async def scs(inter: discord.Interaction):
-    options = [discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto CS2 ze statusem Prime", emoji="🎯")]
+    options = [discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto CS2 ze statusem Prime", emoji=PE_CS2)]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
     embed = discord.Embed(title=f"🎯 VELOX SHOP × COUNTER-STRIKE 2 {E_CS2}", description="Wybierz ofertę Prime z listy poniżej:", color=discord.Color.blue())
