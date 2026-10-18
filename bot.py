@@ -58,7 +58,12 @@ async def on_member_join(member: discord.Member):
     created_at = member.created_at.strftime("%d.%m.%Y %H:%M:%S")
     joined_at = member.joined_at.strftime("%d.%m.%Y %H:%M:%S") if member.joined_at else "Brak"
 
-    desc = f"Hi {member.mention}\nWelcome to Velox Shop!\nYou are our {member_count} member!\n\nDiscord account created: `{created_at}`\nUsername: {member.name}\nJoined at: `{joined_at}`"
+    desc = (
+        f"Hi {member.mention}\nWelcome to Velox Shop!\n"
+        f"You are our {member_count} member!\n\n"
+        f"Discord account created: `{created_at}`\n"
+        f"Username: {member.name}\nJoined at: `{joined_at}`"
+    )
 
     embed = discord.Embed(title="New member!", description=desc, color=discord.Color.dark_embed())
     if member.avatar:
@@ -123,74 +128,4 @@ class TicketView(discord.ui.View):
 
     @discord.ui.button(label="Shop", style=discord.ButtonStyle.success, custom_id="t_shop")
     async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Shop")
-
-    @discord.ui.button(label="Owner", style=discord.ButtonStyle.secondary, custom_id="t_owner")
-    async def owner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Owner")
-
-    @discord.ui.button(label="Support", style=discord.ButtonStyle.primary, custom_id="t_support")
-    async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Support")
-
-class PurchaseSelect(discord.ui.Select):
-    def __init__(self, options: list):
-        super().__init__(placeholder="Zakup Produkt", min_values=1, max_values=1, options=options)
-
-    async def callback(self, inter: discord.Interaction):
-        await inter.response.defer(ephemeral=True)
-        category = inter.guild.get_channel(CAT_SUPPORT)
-        ch = await inter.guild.create_text_channel(
-            name=f"ticket-{inter.user.name.lower()}", 
-            category=category, 
-            overwrites={
-                inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-                inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
-                inter.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
-            }
-        )
-        embed = discord.Embed(
-            title="Ticket: SHOP", 
-            description=f"Witaj {inter.user.mention}! Wybrałeś: **{self.values[0]}**", 
-            color=discord.Color.blue()
-        )
-        await ch.send(content=f"{inter.user.mention}", embed=embed, view=CloseView())
-        await inter.followup.send(f"Stworzono ticket: {ch.mention}", ephemeral=True)
-
-class ShopSelect(discord.ui.Select):
-    def __init__(self, options: list):
-        super().__init__(placeholder="Kliknij aby wybrac", min_values=1, max_values=1, options=options)
-
-    async def callback(self, inter: discord.Interaction):
-        await inter.response.defer(ephemeral=True)
-        product_name = self.values[0]
-
-        if product_name == "Red Engine":
-            desc = "» **Ceny:**\n> 7 Days - €8 / 34zł\n> 1 Month - €15 / 64zł\n> Lifetime - €40 / 170zł\n\n» **Krótki Opis:**\n> ✅ » Jest to Temp Sp00er\n> ✅ » Unban na wszystkie Serwery\n> ✅ » Tx/EasyAdmin Unban\n> ✅ » Sprawdzony oraz Działający"
-            embed = discord.Embed(title="REDENGINE", description=desc, color=discord.Color.blue())
-            embed.set_image(url=SPOOFER_BANNER)
-            p_options = [
-                discord.SelectOption(label="Red Engine - €8 / 34 zł", value="Red Engine - 7 Days", emoji=PE_REDENGINE),
-                discord.SelectOption(label="Red Engine - €15 / 64 zł", value="Red Engine - 1 Month", emoji=PE_REDENGINE),
-                discord.SelectOption(label="Red Engine - €40 / 170 zł", value="Red Engine - Lifetime", emoji=PE_REDENGINE)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
-
-        elif product_name == "Keyser":
-            desc = "» **Ceny:**\n> 1 Day - €5 / 20zł\n> 7 Days - €10 / 40zł\n> 1 Month - €14 / 59zł\n> Lifetime - €35 / 148zł\n\n» **Krótki Opis:**\n> ✅ » Wbudowany Sp00er\n> ✅ » Opcje pod Trolling\n> ✅ » Free Cam z Opcjami\n> ✅ » Kill Everyone\n> ✅ » Kill Player\n> ✅ » Event Executor & Logger"
-            embed = discord.Embed(title="KEYSER", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="Keyser - €5 / 20 zł", value="Keyser - 1 Day", emoji=PE_KEYSER),
-                discord.SelectOption(label="Keyser - €10 / 40 zł", value="Keyser - 7 Days", emoji=PE_KEYSER),
-                discord.SelectOption(label="Keyser - €14 / 59 zł", value="Keyser - 1 Month", emoji=PE_KEYSER),
-                discord.SelectOption(label="Keyser - €35 / 148 zł", value="Keyser - Lifetime", emoji=PE_KEYSER)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
-
-        elif product_name == "Echo.fun":
-            desc = "» **Ceny:**\n> 7 Days - €4.3 / 18.5zł\n> 1 Month - €8 / 35zł\n> Lifetime - €17 /
+        await self.create_ticket(inter, "Shop
