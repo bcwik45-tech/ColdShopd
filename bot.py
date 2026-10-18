@@ -28,7 +28,6 @@ class ColdShopBot(commands.Bot):
 
 bot = ColdShopBot()
 
-# --- WSPÓLNA OBSŁUGA ZAMKNIĘCIA TICKETU ---
 class CloseView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -39,7 +38,6 @@ class CloseView(discord.ui.View):
         await asyncio.sleep(3)
         await inter.channel.delete()
 
-# --- OBSŁUGA TICKETÓW PO WYBORZE Z MENU ---
 class ShopSelect(discord.ui.Select):
     def __init__(self, placeholder: str, options: list):
         super().__init__(placeholder=placeholder, min_values=1, max_values=1, options=options)
@@ -56,14 +54,13 @@ class ShopSelect(discord.ui.Select):
             }
         )
         embed = discord.Embed(
-            title=f"COLDSHOP Ticket: {product_name}",
+            title=f"💎 COLDSHOP Ticket: {product_name}",
             description=f"Witaj {inter.user.mention}!\nOtworzyłeś ticket zakupowy dla: **{product_name}**.",
             color=discord.Color.blue()
         )
         await ch.send(content=f"{inter.user.mention}", embed=embed, view=CloseView())
         await inter.followup.send(f"✅ Stworzono ticket: {ch.mention}", ephemeral=True)
 
-# --- SYSTEM LEGIT CHECK ---
 class LegitView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -94,19 +91,38 @@ async def sl(inter: discord.Interaction):
     await inter.channel.send(embed=embed, view=LegitView())
     await inter.followup.send("Gotowe!", ephemeral=True)
 
-@bot.tree.command(name="setup_bundle", description="Panel Bundle")
+@bot.tree.command(name="setup_bundle", description="Panel Bundle (Konta)")
 @app_commands.checks.has_permissions(administrator=True)
 async def sb(inter: discord.Interaction):
     await inter.response.defer(ephemeral=True)
+    
+    e_steam = discord.PartialEmoji(name="steam", id=1561307761617281165)
+    e_dc = discord.PartialEmoji(name="discord", id=1561307671397929001)
+    e_rock = discord.PartialEmoji(name="rockstar", id=1561308861636542524)
+    e_fivem = discord.PartialEmoji(name="fivem", id=1561307556360749086)
+
     options = [
-        discord.SelectOption(label="Steam Account", value="Steam Account", emoji=discord.PartialEmoji(name="steam", id=1561307761617281165)),
-        discord.SelectOption(label="Discord Account", value="Discord Account", emoji=discord.PartialEmoji(name="discord", id=1561307671397929001)),
-        discord.SelectOption(label="Rockstar Account", value="Rockstar Account", emoji=discord.PartialEmoji(name="rockstar", id=1561308861636542524)),
-        discord.SelectOption(label="FiveM Bundle", value="FiveM Bundle", description="Cały pakiet: Discord + Steam + Rockstar", emoji=discord.PartialEmoji(name="fivem", id=1561307556360749086))
+        discord.SelectOption(label="FiveM Ready", value="FiveM Ready Bundle", description="See the price and open a ticket FiveM Ready.", emoji=e_rock),
+        discord.SelectOption(label="Steam", value="Steam Account", description="See the price and open a ticket Steam.", emoji=e_steam),
+        discord.SelectOption(label="D1scörd", value="Discord Account", description="See the price and open a ticket D1scörd.", emoji=e_dc),
+        discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", description="See the price and open a ticket CS2 Prime Accounts.", emoji=discord.PartialEmoji(name="csprime", id=1561307515067834428))
     ]
+    
     v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(placeholder="Wybierz konto / pakiet Bundle", options=options))
-    embed = discord.Embed(title="📦 COLDSHOP × BUNDLE", description="Wybierz konto lub pakiet z listy poniżej:", color=discord.Color.blue())
+    v.add_item(ShopSelect(placeholder="❌ × Click to select | Kliknij aby wybrać", options=options))
+    
+    desc = (
+        "Accounts **available** from us:\n"
+        f"> 🇷 ✖️ **FiveM Ready**\n"
+        f"> 🎮 ✖️ **Steam**\n"
+        f"> 💬 ✖️ **D1scörd**\n"
+        f"> 🎯 ✖️ **CS2 Prime Accounts**\n\n"
+        "🔊 Select the product you are **interested** in.\n"
+        "🔊 At the **bottom** of the select menu, select duration and payment.\n\n"
+        "🌐 **Instant Buy:** **Click here to visit our website**"
+    )
+    
+    embed = discord.Embed(title="💎 ✖️ Silent Products × PREMIUM", description=desc, color=discord.Color.blue())
     embed.set_image(url=BANNER)
     await inter.channel.send(embed=embed, view=v)
     await inter.followup.send("Gotowe!", ephemeral=True)
@@ -115,13 +131,30 @@ async def sb(inter: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def svpn(inter: discord.Interaction):
     await inter.response.defer(ephemeral=True)
+    
+    e_ip = discord.PartialEmoji(name="ipvanish", id=1561307428643930152)
+    e_nex = discord.PartialEmoji(name="nexhub", id=1561308489933127810)
+
     options = [
-        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", emoji=discord.PartialEmoji(name="ipvanish", id=1561307428643930152)),
-        discord.SelectOption(label="NexHub", value="NexHub VPN", emoji=discord.PartialEmoji(name="nexhub", id=1561308489933127810))
+        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", description="Year - €1 / 4.5 zł", emoji=e_ip),
+        discord.SelectOption(label="NexHub", value="NexHub VPN", description="See the price and open a ticket NexHub.", emoji=e_nex)
     ]
+    
     v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(placeholder="Wybierz usługę VPN", options=options))
-    embed = discord.Embed(title="🛡️ COLDSHOP × VPN", description="Wybierz dostawcę VPN z listy poniżej:", color=discord.Color.blue())
+    v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
+    
+    desc = (
+        "VPN's **available** from us:\n"
+        f"> 🛡️ ✖️ **IP Vanish**\n"
+        f"> 🌐 ✖️ **NexHub**\n\n"
+        "» **Ceny:**\n"
+        f"> 🛡️ Year ✖️ **€1 / 4.5 zł**\n\n"
+        "» **Krótki Opis:**\n"
+        "> ✅ » Full Acces\n"
+        "> ✅ » Gotowy do użycia"
+    )
+    
+    embed = discord.Embed(title="IPVAN$SH 🛡️", description=desc, color=discord.Color.blue())
     embed.set_image(url=BANNER)
     await inter.channel.send(embed=embed, view=v)
     await inter.followup.send("Gotowe!", ephemeral=True)
@@ -130,17 +163,24 @@ async def svpn(inter: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def scs(inter: discord.Interaction):
     await inter.response.defer(ephemeral=True)
+    e_cs = discord.PartialEmoji(name="csprime", id=1561307515067834428)
+
     options = [
-        discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto z widocznym statusem Prime", emoji=discord.PartialEmoji(name="csprime", id=1561307515067834428))
+        discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto CS2 ze statusem Prime", emoji=e_cs)
     ]
     v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(placeholder="Wybierz ofertę CS2", options=options))
-    embed = discord.Embed(title="🎯 COLDSHOP × COUNTER-STRIKE 2", description="Wybierz ofertę z listy poniżej:", color=discord.Color.blue())
+    v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
+    
+    embed = discord.Embed(
+        title="🎯 COLDSHOP × COUNTER-STRIKE 2",
+        description="Wybierz ofertę Prime z listy poniżej:",
+        color=discord.Color.blue()
+    )
     embed.set_image(url=BANNER)
     await inter.channel.send(embed=embed, view=v)
     await inter.followup.send("Gotowe!", ephemeral=True)
 
-@bot.tree.command(name="setup_shop", description="Sklep")
+@bot.tree.command(name="setup_shop", description="Sklep / Dodatki")
 @app_commands.checks.has_permissions(administrator=True)
 async def sshop(inter: discord.Interaction):
     await inter.response.defer(ephemeral=True)
@@ -149,7 +189,7 @@ async def sshop(inter: discord.Interaction):
         discord.SelectOption(label="Soundpacks", value="Soundpacks", emoji="🔊")
     ]
     v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(placeholder="Wybierz dodatek", options=options))
+    v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
     embed = discord.Embed(title="🛒 COLDSHOP × ADDONS", description="Wybierz dodatek z listy poniżej:", color=discord.Color.blue())
     embed.set_image(url=BANNER)
     await inter.channel.send(embed=embed, view=v)
