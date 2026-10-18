@@ -30,6 +30,13 @@ PE_ECHO = discord.PartialEmoji(name="echofun", id=1561389082775388365)
 PE_WORM = discord.PartialEmoji(name="worm", id=1561389638088790108)
 PE_MEMESENSE = discord.PartialEmoji(name="memesense", id=1561433435057164490)
 
+PE_DISCORD = discord.PartialEmoji(name="discord", id=1551370496199761942)
+PE_CS = discord.PartialEmoji(name="cs", id=1561340401523363892)
+PE_STEAM = discord.PartialEmoji(name="steam", id=1561340474349068338)
+PE_IPVANISH = discord.PartialEmoji(name="ipvanish", id=1561340558314709082)
+PE_FIVEM = discord.PartialEmoji(name="fivem", id=1561340614828621906)
+PE_NEXHUB = discord.PartialEmoji(name="nexhub", id=1561341038441013368)
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -50,6 +57,7 @@ bot = VeloxShopBot()
 @bot.event
 async def on_ready():
     print(f"Zalogowano jako {bot.user} (ID: {bot.user.id})")
+    await bot.change_presence(activity=discord.CustomActivity(name="completed"))
 
 @bot.event
 async def on_member_join(member: discord.Member):
@@ -231,45 +239,4 @@ class ShopSelect(discord.ui.Select):
                 "> Lifetime - €17 / 73zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » 100% Niewykrywalne Hitboxy (Wszystkie serwery)\n"
-                "> ✅ » Niewykrywalny Silent Aim\n"
-                "> ✅ » Idealne pod Shootgg & Clowns\n"
-                "> ✅ » Idealne ESPY\n"
-                "> ✅ » Lua Executor\n"
-                "> ✅ » Prosty w konfiguracji"
-            )
-            embed = discord.Embed(title="ECHOFUN", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="Echo - 7 Days", value="Echo Weekly", emoji=PE_ECHO),
-                discord.SelectOption(label="Echo - 1 Month", value="Echo Monthly", emoji=PE_ECHO),
-                discord.SelectOption(label="Echo - Lifetime", value="Echo Lifetime", emoji=PE_ECHO)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
-
-        elif product_name == "Worm":
-            desc = (
-                "» **Ceny:**\n"
-                "> 7 Days - €7 / 35zł\n"
-                "> 1 Month - €13 / 65zł\n"
-                "> 3 Months - €32 / 145zł\n"
-                "> Lifetime - €45 / 200zł\n\n"
-                "» **Krótki Opis:**\n"
-                "> ✅ » Wbudowany Sp00er\n"
-                "> ✅ » Idealny pod Clowns.cool\n"
-                "> ✅ » Niewykrywalny Silent Aim\n"
-                "> ✅ » Lua Executor\n"
-                "> ✅ » Prosty do konfiguracji\n"
-                "> ✅ » Typowo pod PVP"
-            )
-            embed = discord.Embed(title="WORM", description=desc, color=discord.Color.blue())
-            embed.set_image(url=CHEAT_BANNER)
-            p_options = [
-                discord.SelectOption(label="Worm - 7 Days", value="Worm 7 Days", emoji=PE_WORM),
-                discord.SelectOption(label="Worm - 1 Month", value="Worm 1 Month", emoji=PE_WORM),
-                discord.SelectOption(label="Worm - 3 Months", value="Worm 3 Months", emoji=PE_WORM),
-                discord.SelectOption(label="Worm - Lifetime", value="Worm Lifetime", emoji=PE_WORM)
-            ]
-            v = discord.ui.View(timeout=None)
-            v.add_item(PurchaseSelect(p_options))
+                "> ✅ » Niew
