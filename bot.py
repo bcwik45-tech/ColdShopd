@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-DROP_CH = 1561325772587925514       # Zaktualizowany kanał dropu
+DROP_CH = 1561325772587925514       # Kanał dropu
 WELCOME_CH = 1557150071177347152   
 VERIFY_ROLE_ID = 1456459830494630102  # Rola weryfikacji
 
@@ -139,7 +139,6 @@ class TicketView(discord.ui.View):
                     roles_to_ping.append(role.mention)
 
         category = guild.get_channel(category_id) if category_id else None
-
         ch_name = f"{emoji}-ticket-{ticket_type.lower()}-{user.name.lower()}"
 
         ch = await guild.create_text_channel(
@@ -282,20 +281,13 @@ async def setup_tickets(inter: discord.Interaction):
 @bot.tree.command(name="setup_bundle", description="Panel Bundle & Accounts")
 @app_commands.checks.has_permissions(administrator=True)
 async def sb(inter: discord.Interaction):
-    e_fivem = discord.PartialEmoji(name="fivem", id=1561307556360749086)
-    e_steam = discord.PartialEmoji(name="steam", id=1561307761617281165)
-    e_dc = discord.PartialEmoji(name="discord", id=1561307671397929001)
-    e_cs = discord.PartialEmoji(name="csprime", id=1561307515067834428)
-    e_ip = discord.PartialEmoji(name="ipvanish", id=1561307428643930152)
-    e_nex = discord.PartialEmoji(name="nexhub", id=1561308489933127810)
-
     options = [
-        discord.SelectOption(label="FiveM Ready", value="FiveM Ready", description="See the price and open a ticket FiveM Ready.", emoji=e_fivem),
-        discord.SelectOption(label="Steam", value="Steam", description="See the price and open a ticket Steam.", emoji=e_steam),
-        discord.SelectOption(label="D1scörd", value="D1scörd", description="See the price and open a ticket D1scörd.", emoji=e_dc),
-        discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", description="See the price and open a ticket CS2 Prime Accounts.", emoji=e_cs),
-        discord.SelectOption(label="IP Vanish", value="IP Vanish", description="See the price and open a ticket IP Vanish.", emoji=e_ip),
-        discord.SelectOption(label="NexHub", value="NexHub", description="See the price and open a ticket NexHub.", emoji=e_nex)
+        discord.SelectOption(label="FiveM Ready", value="FiveM Ready", description="See the price and open a ticket FiveM Ready.", emoji="🎮"),
+        discord.SelectOption(label="Steam", value="Steam", description="See the price and open a ticket Steam.", emoji="💨"),
+        discord.SelectOption(label="D1scörd", value="D1scörd", description="See the price and open a ticket D1scörd.", emoji="💬"),
+        discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", description="See the price and open a ticket CS2 Prime Accounts.", emoji="🎯"),
+        discord.SelectOption(label="IP Vanish", value="IP Vanish", description="See the price and open a ticket IP Vanish.", emoji="🛡️"),
+        discord.SelectOption(label="NexHub", value="NexHub", description="See the price and open a ticket NexHub.", emoji="⚡")
     ]
     
     v = discord.ui.View(timeout=None)
@@ -303,13 +295,13 @@ async def sb(inter: discord.Interaction):
     
     desc = (
         "Accounts **available** from us:\n"
-        f"> • {e_fivem} **FiveM Ready**\n"
-        f"> • {e_steam} **Steam**\n"
-        f"> • {e_dc} **D1scörd**\n"
-        f"> • {e_cs} **CS2 Prime Accounts**\n\n"
+        "> • 🎮 **FiveM Ready**\n"
+        "> • 💨 **Steam**\n"
+        "> • 💬 **D1scörd**\n"
+        "> • 🎯 **CS2 Prime Accounts**\n\n"
         "VPN's **available** from us:\n"
-        f"> • {e_ip} **IP Vanish**\n"
-        f"> • {e_nex} **NexHub**\n\n"
+        "> • 🛡️ **IP Vanish**\n"
+        "> • ⚡ **NexHub**\n\n"
         "🔊 Select the product you are **interested** in.\n"
         "🔊 At the **bottom** of the select menu, select duration and payment.\n\n"
         "🌐 **Instant Buy:** **Click here to visit our website**"
@@ -322,38 +314,34 @@ async def sb(inter: discord.Interaction):
 @bot.tree.command(name="setup_vpn", description="Panel VPN")
 @app_commands.checks.has_permissions(administrator=True)
 async def svpn(inter: discord.Interaction):
-    e_ip = discord.PartialEmoji(name="ipvanish", id=1561307428643930152)
-    e_nex = discord.PartialEmoji(name="nexhub", id=1561308489933127810)
-
     options = [
-        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", description="Year - €1 / 4.5 zł", emoji=e_ip),
-        discord.SelectOption(label="NexHub", value="NexHub VPN", description="See the price and open a ticket NexHub.", emoji=e_nex)
+        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", description="Year - €1 / 4.5 zł", emoji="🛡️"),
+        discord.SelectOption(label="NexHub", value="NexHub VPN", description="See the price and open a ticket NexHub.", emoji="⚡")
     ]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
     
     desc = (
         "VPN's **available** from us:\n"
-        f"> {e_ip} **IP Vanish**\n"
-        f"> {e_nex} **NexHub**\n\n"
+        "> 🛡️ **IP Vanish**\n"
+        "> ⚡ **NexHub**\n\n"
         "» **Ceny:**\n"
-        f"> {e_ip} Year ✖️ **€1 / 4.5 zł**\n\n"
+        "> 🛡️ Year ✖️ **€1 / 4.5 zł**\n\n"
         "» **Krótki Opis:**\n"
-        "> ✅ » Full Acces\n"
+        "> ✅ » Full Access\n"
         "> ✅ » Gotowy do użycia"
     )
-    embed = discord.Embed(title=f"IPVAN$SH {e_ip}", description=desc, color=discord.Color.blue())
+    embed = discord.Embed(title="🛡️ IPVANISH & VPN", description=desc, color=discord.Color.blue())
     embed.set_image(url=BANNER)
     await inter.response.send_message(embed=embed, view=v)
 
 @bot.tree.command(name="setup_cs", description="Panel Counter-Strike 2")
 @app_commands.checks.has_permissions(administrator=True)
 async def scs(inter: discord.Interaction):
-    e_cs = discord.PartialEmoji(name="csprime", id=1561307515067834428)
-    options = [discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto CS2 ze statusem Prime", emoji=e_cs)]
+    options = [discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto CS2 ze statusem Prime", emoji="🎯")]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
-    embed = discord.Embed(title=f"🎯 VELOX SHOP × COUNTER-STRIKE 2 {e_cs}", description="Wybierz ofertę Prime z listy poniżej:", color=discord.Color.blue())
+    embed = discord.Embed(title="🎯 VELOX SHOP × COUNTER-STRIKE 2", description="Wybierz ofertę Prime z listy poniżej:", color=discord.Color.blue())
     embed.set_image(url=BANNER)
     await inter.response.send_message(embed=embed, view=v)
 
