@@ -1,6 +1,7 @@
-import os
+=import os
 import random
 import asyncio
+from datetime import datetime, time, timezone
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -23,6 +24,7 @@ LEGIT_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/15614
 BUNDLE_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561424557225812079/7ac5534e-a054-4862-96f3-e0c62be3e27d.png"
 CS_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561433087106089070/70185ca5-b4d2-4a3f-8f6a-c9faa3ae48a9.png"
 VERIFY_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561423524642562148/3c6b5668-0247-430b-bf68-7c9b66d0d59d.png"
+TICKET_BANNER = "https://cdn.discordapp.com/attachments/1541276042788864080/1561439203697631332/veloxshopbanner.jpg"
 
 PE_REDENGINE = discord.PartialEmoji(name="redengine", id=1561388842852814998)
 PE_KEYSER = discord.PartialEmoji(name="keyser", id=1561427299461758997)
@@ -40,6 +42,8 @@ PE_NEXHUB = discord.PartialEmoji(name="nexhub", id=1561341038441013368)
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+
+drop_cooldowns = {}
 
 class VeloxShopBot(commands.Bot):
     def __init__(self):
@@ -93,14 +97,21 @@ class CloseView(discord.ui.View):
         await asyncio.sleep(3)
         await inter.channel.delete()
 
-class TicketView(discord.ui.View):
+class TicketSelect(discord.ui.Select):
     def __init__(self):
-        super().__init__(timeout=None)
+        options = [
+            discord.SelectOption(label="Ticket Owner", description="Open if you have a demand to the owners.", emoji="👑"),
+            discord.SelectOption(label="Ticket Shop", description="Open if you want to buy something.", emoji="🛒"),
+            discord.SelectOption(label="Ticket Support", description="Open if you need any help.", emoji="🎫"),
+            discord.SelectOption(label="Ticket Partner", description="Open if you want to collaborate with us.", emoji="🤝")
+        ]
+        super().__init__(placeholder="Select category...", min_values=1, max_values=1, options=options)
 
-    async def create_ticket(self, inter: discord.Interaction, ticket_type: str):
+    async def callback(self, inter: discord.Interaction):
         await inter.response.defer(ephemeral=True)
         guild = inter.guild
         user = inter.user
+        ticket_type = self.values[0].replace("Ticket ", "")
 
         roles_to_ping = []
         category_id = CAT_SUPPORT
@@ -137,21 +148,14 @@ class TicketView(discord.ui.View):
         await ch.send(content=f"{user.mention} " + " ".join(roles_to_ping), embed=embed, view=CloseView())
         await inter.followup.send(f"Stworzono ticket: {ch.mention}", ephemeral=True)
 
-    @discord.ui.button(label="Shop", style=discord.ButtonStyle.success, custom_id="t_shop")
-    async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Shop")
-
-    @discord.ui.button(label="Owner", style=discord.ButtonStyle.secondary, custom_id="t_owner")
-    async def owner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Owner")
-
-    @discord.ui.button(label="Support", style=discord.ButtonStyle.primary, custom_id="t_support")
-    async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Support")
+class TicketView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.add_item(TicketSelect())
 
 class PurchaseSelect(discord.ui.Select):
     def __init__(self, options: list):
-        super().__init__(placeholder="Zakup Produkt | Purchase Product", min_values=1, max_values=1, options=options)
+        super().__init__(placeholder="❌ × Purchase Product | Zakup Produkt", min_values=1, max_values=1, options=options)
 
     async def callback(self, inter: discord.Interaction):
         await inter.response.defer(ephemeral=True)
@@ -473,27 +477,20 @@ class LegitView(discord.ui.View):
         await inter.response.edit_message(view=self)
         await inter.followup.send("Dzieki za glos!", ephemeral=True)
 
-class TicketSetupView(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
-
-    @discord.ui.button(label="Shop", style=discord.ButtonStyle.success, custom_id="t_shop_main")
-    async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await TicketView().create_ticket(inter, "Shop")
-
-    @discord.ui.button(label="Owner", style=discord.ButtonStyle.secondary, custom_id="t_owner_main")
-    async def owner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await TicketView().create_ticket(inter, "Owner")
-
-    @discord.ui.button(label="Support", style=discord.ButtonStyle.primary, custom_id="t_support_main")
-    async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await TicketView().create_ticket(inter, "Support")
-
 @bot.tree.command(name="setup_tickets", description="Panel ticketow")
 @app_commands.checks.has_permissions(administrator=True)
 async def setup_tickets(inter: discord.Interaction):
-    embed = discord.Embed(title="Tickets", description="Kliknij przycisk poniżej, aby otworzyć ticket.", color=discord.Color.dark_embed())
-    await inter.response.send_message(embed=embed, view=TicketSetupView())
+    desc = (
+        "Tickets\n\n"
+        "**Ticket Owner**\n*Open if you have a demand to the owners.*\n\n"
+        "**Ticket Shop**\n*Open if you want to buy something.*\n\n"
+        "**Ticket Support**\n*Open if you need any help.*\n\n"
+        "**Ticket Partner**\n*Open if you want to collaborate with us.*\n\n"
+        "For any issues, text us in #chat."
+    )
+    embed = discord.Embed(title="", description=desc, color=discord.Color.dark_embed())
+    embed.set_image(url=TICKET_BANNER)
+    await inter.response.send_message(embed=embed, view=TicketView())
 
 @bot.tree.command(name="setup_verify", description="Panel weryfikacji")
 @app_commands.checks.has_permissions(administrator=True)
@@ -689,9 +686,31 @@ async def dp(inter: discord.Interaction):
         await inter.response.send_message("Zly kanal!", ephemeral=True)
         return
     
+    user_id = inter.user.id
+    now = datetime.now(timezone.utc)
+    midnight = datetime.combine(now.date(), time(0, 0), tzinfo=timezone.utc)
+
+    if user_id in drop_cooldowns and drop_cooldowns[user_id] > midnight:
+        await inter.response.send_message("Już używałeś dropu dzisiaj! Spróbuj ponownie po północy.", ephemeral=True)
+        return
+
+    drop_cooldowns[user_id] = now
+
     if random.randint(1, 100) <= 5:
-        await inter.response.send_message(f"🎉 Gratulacje {inter.user.mention}, wygrałeś 10% zniżki w Velox Shop!")
+        desc = (
+            f"> • {inter.user.mention} **Gratulacje!**, udało Ci się coś wygrać 🔊\n"
+            "> • **Otrzymujesz** kod zniżkowy: **-15%**\n"
+            "> • Masz **24 godziny** na jego **wykorzystanie** ⏱️"
+        )
     else:
-        await inter.response.send_message(f"⚡ Niestety {inter.user.mention}, tym razem się nie udało. Spróbuj ponownie za jakiś czas.")
+        desc = (
+            f"> • {inter.user.mention} **Niestety**, tym razem się **nie udało**.\n"
+            "> • **Spróbuj** ponownie za jakiś czas ⏱️\n"
+            "> • Może **następnym** razem **trafisz** coś lepszego."
+        )
+
+    embed = discord.Embed(title="💎 ⁠ Silent Mafia × Drop", description=desc, color=discord.Color.blue())
+    embed.set_footer(text=f"Losowanie wykonane przez {inter.user.name}")
+    await inter.response.send_message(embed=embed)
 
 bot.run(TOKEN)
