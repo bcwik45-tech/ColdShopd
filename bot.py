@@ -178,4 +178,10 @@ class TicketView(discord.ui.View):
         
         ping_content = f"{user.mention} " + " ".join(roles_to_ping)
         await ch.send(content=ping_content, embed=embed, view=CloseView())
-        await inter.followup.send(f"✅ Stworzono ticket: {ch.mention}",
+        await inter.followup.send(f"✅ Stworzono ticket: {ch.mention}", ephemeral=True)
+
+    @discord.ui.button(label="Shop", emoji="🛒", style=discord.ButtonStyle.success, custom_id="t_shop")
+    async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await self.create_ticket(inter, "Shop", "🛒")
+
+    @discord.ui.button(label="Owner", emoji="👑
