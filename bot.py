@@ -336,7 +336,7 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "Steam":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_STEAM} x1 - €0.04 / 5.15zł\n\n"
+                f"> {PE_STEAM} x1 - €0.04 / 1.00zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Full Acces\n"
                 "> ✅ » Gotowy do użycia\n"
@@ -345,7 +345,7 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"STE$M {PE_STEAM}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BANNER)
             p_options = [
-                discord.SelectOption(label="Steam x1 - €0.04 / 5.15 zł", value="Steam x1", emoji=PE_STEAM)
+                discord.SelectOption(label="Steam x1 - €0.04 / 1.00 zł", value="Steam x1", emoji=PE_STEAM)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -437,8 +437,8 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "FiveM Bundle":
             desc = (
                 "» **Ceny:**\n"
-                "> ⁠Zwykłe Bundle × €0.47 / 3.99zł\n"
-                "> ⁠Aged Bundle × €0.35 / 9.99zł\n\n"
+                "> ⁠Zwykłe Bundle × €0.47 / 1.50zł\n"
+                "> ⁠Aged Bundle × €0.35 / 2.00zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Pakiet Rockst$r + Dsc + St$am\n"
                 "> ✅ » Full Acces\n"
@@ -560,7 +560,7 @@ async def sb(inter: discord.Interaction):
     v.add_item(ShopSelect(options))
     
     desc = (
-        "💎 ⁠`Silent Products × PREMIUM`\n\n"
+        "💎 ⁠`Velox Shop × PREMIUM`\n\n"
         "Accounts **available** from us:\n"
         f"> • {PE_FIVEM} x FiveM Ready\n"
         f"> • {PE_STEAM} x Steam\n"
@@ -589,7 +589,7 @@ async def sb2(inter: discord.Interaction):
     v.add_item(ShopSelect(options))
     
     desc = (
-        "💎 ⁠`Silent Products × Acounts Bundle`\n\n"
+        "💎 ⁠`Velox Shop × Acounts Bundle`\n\n"
         "Bundle **available** from us:\n"
         f"> • {PE_FIVEM} x FiveM Bundle\n"
         f"> • {PE_DISCORD} x D1scörd Bundle\n\n"
@@ -633,7 +633,7 @@ async def scheatscs(inter: discord.Interaction):
     v.add_item(ShopSelect(options))
     
     desc = (
-        "💎 ⁠`Silent Products × COUNTER STRIKE 2`\n\n"
+        "💎 ⁠`Velox Shop × COUNTER STRIKE 2`\n\n"
         "Cs 2 **available** from us:\n"
         f"> • {PE_MEMESENSE} x Memesense\n\n"
         "📢 **Select** the product you are **interested** in.\n"
@@ -655,7 +655,7 @@ async def scheats1(inter: discord.Interaction):
     v.add_item(ShopSelect(options))
     
     desc = (
-        "💎 ⁠`Silent Products × COUNTER STRIKE 2`\n\n"
+        "💎 ⁠`Velox Shop × COUNTER STRIKE 2`\n\n"
         "Cs 2 **available** from us:\n"
         f"> • {PE_MEMESENSE} x Memesense\n\n"
         "📢 **Select** the product you are **interested** in.\n"
@@ -748,7 +748,7 @@ async def dp(inter: discord.Interaction):
             "> • Może **następnym** razem **trafisz** coś lepszego."
         )
 
-    embed = discord.Embed(title="💎 ⁠ Silent Mafia × Drop", description=desc, color=discord.Color.blue())
+    embed = discord.Embed(title="💎 ⁠ Velox Shop × Drop", description=desc, color=discord.Color.blue())
     embed.set_footer(text=f"Losowanie wykonane przez {inter.user.name}")
     await inter.response.send_message(embed=embed)
 
