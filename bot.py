@@ -536,7 +536,7 @@ async def setup_tickets(inter: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def setup_verify(inter: discord.Interaction):
     desc = (
-        "Welcome to **COLDCFG**! 🧊\n\n"
+        "Welcome to **Velox Shop**! 🧊\n\n"
         "To gain access to the rest of the server and unlock all channels, please verify your account by clicking the button below.\n\n"
         "🔒 **Security Check:** Automated protection is active.\n"
         "⚡ **Access:** Instant role assignment upon verification.\n\n"
