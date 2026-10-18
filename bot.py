@@ -19,6 +19,7 @@ CAT_SUPPORT = 1539002224007712911
 
 BANNER = "http://googleusercontent.com/generated_animated_image/15959043500870823950"
 CHEAT_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561373946010669137/a444a5e8-9b52-4784-a325-e81795221c2d.png"
+SPOOFER_BANNER = "https://cdn.discordapp.com/attachments/1541276042788864080/1561390239581339658/Szpiegowski_emblemat_SPOOFER.png"
 
 # STANDARDOWE EMOTKI / BUNDLE
 E_IPVANISH = "<:ipvanish:1561340558314709082>"
@@ -28,14 +29,16 @@ E_DISCORD = "<:discord:1551370496199761942>"
 E_STEAM = "<:steam:1561340474349068338>"
 E_NEXHUB = "<:nexhub:1561341038441013368>"
 
-# EMOTKI DO CHEATÓW (ECHO, AMBANI, WORM)
-E_ECHO = "<:echofun:1507649865453273129>"
-E_AMBANI = "<:ambani:1460318202637844531>"
-E_WORM = "<:worm:1546599858306031626>"
+# EMOTKI DO CHEATÓW I SPOOFERÓW
+E_ECHO = "<:echofun:1561389082775388365>"
+E_AMBANI = "<:ambani:1561389373378011207>"
+E_WORM = "<:worm:1561389638088790108>"
+E_VEXON = "<:vexon:1561390772413005834>"
 
-PE_ECHO = discord.PartialEmoji(name="echofun", id=1507649865453273129)
-PE_AMBANI = discord.PartialEmoji(name="ambani", id=1460318202637844531)
-PE_WORM = discord.PartialEmoji(name="worm", id=1546599858306031626)
+PE_ECHO = discord.PartialEmoji(name="echofun", id=1561389082775388365)
+PE_AMBANI = discord.PartialEmoji(name="ambani", id=1561389373378011207)
+PE_WORM = discord.PartialEmoji(name="worm", id=1561389638088790108)
+PE_VEXON = discord.PartialEmoji(name="vexon", id=1561390772413005834)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -239,7 +242,8 @@ class ShopSelect(discord.ui.Select):
 
     async def callback(self, inter: discord.Interaction):
         product_name = self.values[0]
-        
+        guild = inter.guild
+
         if product_name in ["IP Vanish", "IP Vanish VPN"]:
             desc = f"» **Ceny:**\n> {E_IPVANISH} **Year** ✖️ **€1 / 4.5zł**\n\n» **Krótki Opis:**\n> ✅ » Full Access\n> ✅ » Gotowy do użycia"
             embed = discord.Embed(title=f"IPVAN$SH {E_IPVANISH}", description=desc, color=discord.Color.blue())
@@ -287,42 +291,103 @@ class ShopSelect(discord.ui.Select):
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
             await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
-        # --- OBSŁUGA CHEATÓW FIVE-M (ECHO.FUN, AMBANI, WORM) ---
+        # --- OBSŁUGA CHEATÓW FIVE-M (Ceny podniesione o 3 zł) ---
         elif product_name == "Echo.fun":
-            desc = f"» **Ceny:**\n> {E_ECHO} **7 Days** ✖️ **€5 / 23zł**\n> {E_ECHO} **1 Month** ✖️ **€13 / 57zł**\n> {E_ECHO} **Lifetime** ✖️ **€43 / 182zł**\n\n» **Krótki Opis:**\n> ✅ » Niewykrywalny Silent Aim\n> ✅ » Lua Executor"
+            desc = (
+                f"» **Ceny:**\n"
+                f"> {E_ECHO} **7 Days** ✖️ **€4.3 / 18.5zł**\n"
+                f"> {E_ECHO} **1 Month** ✖️ **€8 / 35zł**\n"
+                f"> {E_ECHO} **Lifetime** ✖️ **€17 / 73zł**\n\n"
+                f"🔊 **Showcase:** [Kliknij, by zobaczyć](https://discord.com)\n\n"
+                f"» **Krótki Opis:**\n"
+                f"> ✅ » Jest to Temp sp00er\n"
+                f"> ✅ » Posiada Anty-Sp00fa na ShootGG\n"
+                f"> ✅ » Działa na serwery\n"
+                f"> ✅ » Odbanuje cię z wszystkiego\n"
+                f"> ✅ » Gotowy do użycia"
+            )
             embed = discord.Embed(title=f"ECHOFUN {E_ECHO}", description=desc, color=discord.Color.blue())
             embed.set_image(url=CHEAT_BANNER)
             p_options = [
-                discord.SelectOption(label="Echo - €5 / 23 zł", value="Echo Weekly", emoji=PE_ECHO),
-                discord.SelectOption(label="Echo - €13 / 57 zł", value="Echo Monthly", emoji=PE_ECHO),
-                discord.SelectOption(label="Echo - €43 / 182 zł", value="Echo Lifetime", emoji=PE_ECHO)
+                discord.SelectOption(label="Echo - €4.3 / 18.5 zł", value="Echo Weekly", description="7 Days", emoji=PE_ECHO),
+                discord.SelectOption(label="Echo - €8 / 35 zł", value="Echo Monthly", description="1 Month", emoji=PE_ECHO),
+                discord.SelectOption(label="Echo - €17 / 73 zł", value="Echo Lifetime", description="Lifetime", emoji=PE_ECHO)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
             await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
         elif product_name == "Ambani":
-            desc = f"» **Ceny:**\n> {E_AMBANI} **7 Days** ✖️ **€9.5 / 43zł**\n> {E_AMBANI} **1 Month** ✖️ **€14 / 63zł**\n> {E_AMBANI} **Lifetime** ✖️ **€33 / 143zł**\n\n» **Krótki Opis:**\n> ✅ » Dobry ESP\n> ✅ » Troll Opcje"
+            desc = (
+                f"» **Ceny:**\n"
+                f"> {E_AMBANI} **7 Days** ✖️ **€4.3 / 18.5zł**\n"
+                f"> {E_AMBANI} **1 Month** ✖️ **€8 / 35zł**\n"
+                f"> {E_AMBANI} **Lifetime** ✖️ **€17 / 73zł**\n\n"
+                f"🔊 **Showcase:** [Kliknij, by zobaczyć](https://discord.com)\n\n"
+                f"» **Krótki Opis:**\n"
+                f"> ✅ » Jest to Temp sp00er\n"
+                f"> ✅ » Posiada Anty-Sp00fa na ShootGG\n"
+                f"> ✅ » Działa na serwery\n"
+                f"> ✅ » Odbanuje cię z wszystkiego\n"
+                f"> ✅ » Gotowy do użycia"
+            )
             embed = discord.Embed(title=f"AMBANI {E_AMBANI}", description=desc, color=discord.Color.blue())
             embed.set_image(url=CHEAT_BANNER)
             p_options = [
-                discord.SelectOption(label="Ambani - €9.5 / 43 zł", value="Ambani Weekly", emoji=PE_AMBANI),
-                discord.SelectOption(label="Ambani - €14 / 63 zł", value="Ambani Month", emoji=PE_AMBANI),
-                discord.SelectOption(label="Ambani - €33 / 143 zł", value="Ambani Lifetime", emoji=PE_AMBANI)
+                discord.SelectOption(label="Ambani - €4.3 / 18.5 zł", value="Ambani Weekly", description="7 Days", emoji=PE_AMBANI),
+                discord.SelectOption(label="Ambani - €8 / 35 zł", value="Ambani Month", description="1 Month", emoji=PE_AMBANI),
+                discord.SelectOption(label="Ambani - €17 / 73 zł", value="Ambani Lifetime", description="Lifetime", emoji=PE_AMBANI)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
             await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
         elif product_name == "Worm":
-            desc = f"» **Ceny:**\n> {E_WORM} **7 Days** ✖️ **€7 / 33zł**\n> {E_WORM} **1 Month** ✖️ **€13 / 63zł**\n> {E_WORM} **3 Months** ✖️ **€32 / 143zł**\n> {E_WORM} **Lifetime** ✖️ **€45 / 203zł**\n\n» **Krótki Opis:**\n> ✅ » Wbudowany Spoofer\n> ✅ » Lua Executor"
+            desc = (
+                f"» **Ceny:**\n"
+                f"> {E_WORM} **7 Days** ✖️ **€4.3 / 18.5zł**\n"
+                f"> {E_WORM} **1 Month** ✖️ **€8 / 35zł**\n"
+                f"> {E_WORM} **Lifetime** ✖️ **€17 / 73zł**\n\n"
+                f"🔊 **Showcase:** [Kliknij, by zobaczyć](https://discord.com)\n\n"
+                f"» **Krótki Opis:**\n"
+                f"> ✅ » Jest to Temp sp00er\n"
+                f"> ✅ » Posiada Anty-Sp00fa na ShootGG\n"
+                f"> ✅ » Działa na serwery\n"
+                f"> ✅ » Odbanuje cię z wszystkiego\n"
+                f"> ✅ » Gotowy do użycia"
+            )
             embed = discord.Embed(title=f"WORM {E_WORM}", description=desc, color=discord.Color.blue())
             embed.set_image(url=CHEAT_BANNER)
             p_options = [
-                discord.SelectOption(label="Worm - €7 / 33 zł", value="Worm 7 Days", emoji=PE_WORM),
-                discord.SelectOption(label="Worm - €13 / 63 zł", value="Worm 1 Month", emoji=PE_WORM),
-                discord.SelectOption(label="Worm - €32 / 143 zł", value="Worm 3 Months", emoji=PE_WORM),
-                discord.SelectOption(label="Worm - €45 / 203 zł", value="Worm Lifetime", emoji=PE_WORM)
+                discord.SelectOption(label="Worm - €4.3 / 18.5 zł", value="Worm 7 Days", description="7 Days", emoji=PE_WORM),
+                discord.SelectOption(label="Worm - €8 / 35 zł", value="Worm 1 Month", description="1 Month", emoji=PE_WORM),
+                discord.SelectOption(label="Worm - €17 / 73 zł", value="Worm Lifetime", description="Lifetime", emoji=PE_WORM)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        # --- OBSŁUGA SPOOFERA VEXON ---
+        elif product_name == "Vexon":
+            desc = (
+                f"» **Ceny:**\n"
+                f"> {E_VEXON} **7 Days** ✖️ **€4 / 17zł**\n"
+                f"> {E_VEXON} **Month** ✖️ **€7 / 30zł**\n"
+                f"> {E_VEXON} **Lifetime** ✖️ **€17 / 73zł**\n\n"
+                f"🔊 **Showcase:** [Kliknij, by zobaczyć](https://discord.com)\n\n"
+                f"» **Krótki Opis:**\n"
+                f"> ✅ » Jest to Temp sp00er\n"
+                f"> ✅ » Posiada Anty-Sp00fa na ShootGG\n"
+                f"> ✅ » Działa na serwery\n"
+                f"> ✅ » Odbanuje cię z wszystkiego\n"
+                f"> ✅ » Gotowy do użycia"
+            )
+            embed = discord.Embed(title=f"VEXON {E_VEXON}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=CHEAT_BANNER)
+            p_options = [
+                discord.SelectOption(label="Vexon - €4 / 17 zł", value="Vexon 7 Days", description="7 Days", emoji=PE_VEXON),
+                discord.SelectOption(label="Vexon - €7 / 30 zł", value="Vexon 1 Month", description="1 Month", emoji=PE_VEXON),
+                discord.SelectOption(label="Vexon - €17 / 73 zł", value="Vexon Lifetime", description="Lifetime", emoji=PE_VEXON)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=p_options))
@@ -449,6 +514,25 @@ async def scheats(inter: discord.Interaction):
     )
     embed = discord.Embed(title="💎 ✖️ Velox Products × FiveM Cheats", description=desc, color=discord.Color.blue())
     embed.set_image(url=CHEAT_BANNER)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_spoofer", description="Panel FiveM Spoofer")
+@app_commands.checks.has_permissions(administrator=True)
+async def sspoof(inter: discord.Interaction):
+    options = [
+        discord.SelectOption(label="Vexon", value="Vexon", description="See the price and open a ticket Vexon Spoofer.", emoji=PE_VEXON)
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(placeholder="❌ × Click to select | Kliknij aby wybrać", options=options))
+    desc = (
+        "Spoofers **available** from us:\n"
+        f"> • {E_VEXON} **Vexon**\n\n"
+        "🔊 Select the product you are **interested** in.\n"
+        "🔊 At the **bottom** of the select menu, select duration and payment.\n\n"
+        "🌐 **Instant Buy:** **Click here to visit our website**"
+    )
+    embed = discord.Embed(title="💎 ✖️ Velox Products × FiveM SpooferS", description=desc, color=discord.Color.blue())
+    embed.set_image(url=SPOOFER_BANNER)
     await inter.response.send_message(embed=embed, view=v)
 
 @bot.tree.command(name="setup_vpn", description="Panel VPN")
