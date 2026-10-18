@@ -20,21 +20,6 @@ BANNER = "http://googleusercontent.com/generated_animated_image/1595904350087082
 CHEAT_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561373946010669137/a444a5e8-9b52-4784-a325-e81795221c2d.png"
 SPOOFER_BANNER = "https://cdn.discordapp.com/attachments/1541276042788864080/1561390239581339658/Szpiegowski_emblemat_SPOOFER.png"
 
-E_IPVANISH = "<:ipvanish:1561340558314709082>"
-E_FIVEM = "<:fivem:1561340614828621906>"
-E_CS2 = "<:cs2:1561340401523363892>"
-E_DISCORD = "<:discord:1551370496199761942>"
-E_STEAM = "<:steam:1561340474349068338>"
-E_NEXHUB = "<:nexhub:1561341038441013368>"
-
-E_ECHO = "<:echofun:1561389082775388365>"
-E_AMBANI = "<:ambani:1561389373378011207>"
-E_WORM = "<:worm:1561389638088790108>"
-
-PE_ECHO = discord.PartialEmoji(name="echofun", id=1561389082775388365)
-PE_AMBANI = discord.PartialEmoji(name="ambani", id=1561389373378011207)
-PE_WORM = discord.PartialEmoji(name="worm", id=1561389638088790108)
-
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -55,7 +40,6 @@ bot = VeloxShopBot()
 @bot.event
 async def on_ready():
     print(f"Zalogowano jako {bot.user} (ID: {bot.user.id})")
-    print("Bot jest gotowy do pracy.")
 
 @bot.event
 async def on_member_join(member: discord.Member):
@@ -133,36 +117,6 @@ class TicketView(discord.ui.View):
     @discord.ui.button(label="Support", style=discord.ButtonStyle.primary, custom_id="t_support")
     async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
         await self.create_ticket(inter, "Support")
-
-class PurchaseSelect(discord.ui.Select):
-    def __init__(self, options: list):
-        super().__init__(placeholder="Zakup Produkt", min_values=1, max_values=1, options=options)
-
-    async def callback(self, inter: discord.Interaction):
-        await inter.response.defer(ephemeral=True)
-        category = inter.guild.get_channel(CAT_SUPPORT)
-        ch = await inter.guild.create_text_channel(name=f"ticket-{inter.user.name.lower()}", category=category, overwrites={
-            inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-            inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
-            guild_me := inter.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
-        })
-        embed = discord.Embed(title="Ticket: SHOP", description=f"Witaj {inter.user.mention}! Wybrałeś: **{self.values[0]}**", color=discord.Color.blue())
-        await ch.send(content=f"{inter.user.mention}", embed=embed, view=CloseView())
-        await inter.followup.send(f"Stworzono ticket: {ch.mention}", ephemeral=True)
-
-class ShopSelect(discord.ui.Select):
-    def __init__(self, options: list):
-        super().__init__(placeholder="Kliknij aby wybrac", min_values=1, max_values=1, options=options)
-
-    async def callback(self, inter: discord.Interaction):
-        await inter.response.defer(ephemeral=True)
-        product_name = self.values[0]
-        embed = discord.Embed(title=f"Produkt: {product_name}", description="Wybierz opcję poniżej:", color=discord.Color.blue())
-        embed.set_image(url=BANNER)
-        p_options = [discord.SelectOption(label=f"Kup {product_name}", value=product_name)]
-        v = discord.ui.View(timeout=None)
-        v.add_item(PurchaseSelect(p_options))
-        await inter.followup.send(embed=embed, view=v)
 
 class VerifyView(discord.ui.View):
     def __init__(self):
