@@ -132,3 +132,11 @@ class TicketView(discord.ui.View):
 
         elif ticket_type == "Partnership":
             category_id = CAT_OWNER
+            role_ids = [1456459709405204542, 1531428039676792903]
+            for r_id in role_ids:
+                role = guild.get_role(r_id)
+                if role:
+                    overwrites[role] = discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    roles_to_ping.append(role.mention)
+
+        elif ticket_type == "Shop":
