@@ -23,7 +23,6 @@ SPOOFER_BANNER = "https://cdn.discordapp.com/attachments/1541276042788864080/156
 LEGIT_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561423524642562148/3c6b5668-0247-430b-bf68-7c9b66d0d59d.png"
 BUNDLE_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561424557225812079/7ac5534e-a054-4862-96f3-e0c62be3e27d.png"
 CS_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561433087106089070/70185ca5-b4d2-4a3f-8f6a-c9faa3ae48a9.png"
-VERIFY_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561423524642562148/3c6b5668-0247-430b-bf68-7c9b66d0d59d.png"
 TICKET_BANNER = "https://cdn.discordapp.com/attachments/1541276042788864080/1561439203697631332/veloxshopbanner.jpg"
 
 PE_REDENGINE = discord.PartialEmoji(name="redengine", id=1561388842852814998)
@@ -32,11 +31,11 @@ PE_ECHO = discord.PartialEmoji(name="echofun", id=1561389082775388365)
 PE_WORM = discord.PartialEmoji(name="worm", id=1561389638088790108)
 PE_MEMESENSE = discord.PartialEmoji(name="memesense", id=1561433435057164490)
 
-PE_DISCORD = discord.PartialEmoji(name="discord", id=1551370496199761942)
+PE_DISCORD = discord.PartialEmoji(name="discord", id=1561442072001777694)
 PE_CS = discord.PartialEmoji(name="cs", id=1561340401523363892)
 PE_STEAM = discord.PartialEmoji(name="steam", id=1561340474349068338)
 PE_IPVANISH = discord.PartialEmoji(name="ipvanish", id=1561340558314709082)
-PE_FIVEM = discord.PartialEmoji(name="fivem", id=1561340614828621906)
+PE_FIVEM = discord.PartialEmoji(name="fivem", id=1561441938798805113)
 PE_NEXHUB = discord.PartialEmoji(name="nexhub", id=1561341038441013368)
 
 intents = discord.Intents.default()
@@ -435,6 +434,47 @@ class ShopSelect(discord.ui.Select):
             v.add_item(PurchaseSelect(p_options))
             await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
+        elif product_name == "FiveM Bundle":
+            desc = (
+                "» **Ceny:**\n"
+                "> ⁠Zwykłe Bundle × €0.47 / 1.00zł\n"
+                "> ⁠Aged Bundle × €0.35 / 1.50zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Pakiet Rockst$r + Dsc + St$am\n"
+                "> ✅ » Full Acces\n"
+                "> ✅ » Gotowy do użycia\n"
+                "> ✅ » Działający"
+            )
+            embed = discord.Embed(title="FIVEEM BUNDLE", description=desc, color=discord.Color.blue())
+            embed.set_image(url=BUNDLE_BANNER)
+            p_options = [
+                discord.SelectOption(label="Zwykle - €0.47 / 1.00 zł", value="FiveM Bundle Zwykle", emoji=PE_FIVEM),
+                discord.SelectOption(label="Aged - €0.35 / 1.50 zł", value="FiveM Bundle Aged", emoji=PE_FIVEM)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        elif product_name == "D1scörd Bundle":
+            desc = (
+                "» **Ceny:**\n"
+                f"> {PE_DISCORD} x3 × €0.70 / 3zł\n"
+                f"> {PE_DISCORD} x10 × €1.9 / 8zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Full Acces\n"
+                "> ✅ » Gotowy do użycia\n"
+                "> ✅ » Działające"
+            )
+            embed = discord.Embed(title=f"DISCORD BUNDLE {PE_DISCORD}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=BUNDLE_BANNER)
+            p_options = [
+                discord.SelectOption(label="Discord Bundle - €0.70 / 2.99 zł", value="Discord Bundle 3 acc", emoji=PE_DISCORD),
+                discord.SelectOption(label="Discord Bundle - €1.87 / 7.99 zł", value="Discord Bundle 10 acc", emoji=PE_DISCORD)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
         else:
             embed = discord.Embed(title=f"Produkt: {product_name}", description="Wybierz opcję poniżej:", color=discord.Color.blue())
             embed.set_image(url=BANNER)
@@ -503,7 +543,6 @@ async def setup_verify(inter: discord.Interaction):
         "Click the button below to verify yourself."
     )
     embed = discord.Embed(title="Verification", description=desc, color=discord.Color.from_rgb(46, 204, 113))
-    embed.set_image(url=VERIFY_BANNER)
     await inter.response.send_message(embed=embed, view=VerifyView())
 
 @bot.tree.command(name="setup_bundle", description="Panel Bundle & Accounts")
