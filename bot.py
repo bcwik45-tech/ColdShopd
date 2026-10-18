@@ -186,9 +186,9 @@ class ShopSelect(discord.ui.Select):
         if product_name == "Red Engine":
             desc = (
                 "» **Ceny:**\n"
-                "> 7 Days - €8 / 34zł\n"
-                "> 1 Month - €15 / 64zł\n"
-                "> Lifetime - €40 / 170zł\n\n"
+                "> 7 Days - €8 / 39zł\n"
+                "> 1 Month - €15 / 69zł\n"
+                "> Lifetime - €40 / 175zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Jest to Temp Sp00er\n"
                 "> ✅ » Unban na wszystkie Serwery\n"
@@ -198,9 +198,9 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title="REDENGINE", description=desc, color=discord.Color.blue())
             embed.set_image(url=SPOOFER_BANNER)
             p_options = [
-                discord.SelectOption(label="Red Engine - €8 / 34 zł", value="Red Engine - 7 Days", emoji=PE_REDENGINE),
-                discord.SelectOption(label="Red Engine - €15 / 64 zł", value="Red Engine - 1 Month", emoji=PE_REDENGINE),
-                discord.SelectOption(label="Red Engine - €40 / 170 zł", value="Red Engine - Lifetime", emoji=PE_REDENGINE)
+                discord.SelectOption(label="Red Engine - €8 / 39 zł", value="Red Engine - 7 Days", emoji=PE_REDENGINE),
+                discord.SelectOption(label="Red Engine - €15 / 69 zł", value="Red Engine - 1 Month", emoji=PE_REDENGINE),
+                discord.SelectOption(label="Red Engine - €40 / 175 zł", value="Red Engine - Lifetime", emoji=PE_REDENGINE)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -209,10 +209,10 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "Keyser":
             desc = (
                 "» **Ceny:**\n"
-                "> 1 Day - €5 / 20zł\n"
-                "> 7 Days - €10 / 40zł\n"
-                "> 1 Month - €14 / 59zł\n"
-                "> Lifetime - €35 / 148zł\n\n"
+                "> 1 Day - €5 / 25zł\n"
+                "> 7 Days - €10 / 45zł\n"
+                "> 1 Month - €14 / 64zł\n"
+                "> Lifetime - €35 / 153zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Wbudowany Sp00er\n"
                 "> ✅ » Opcje pod Trolling\n"
@@ -224,10 +224,10 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title="KEYSER", description=desc, color=discord.Color.blue())
             embed.set_image(url=CHEAT_BANNER)
             p_options = [
-                discord.SelectOption(label="Keyser - €5 / 20 zł", value="Keyser - 1 Day", emoji=PE_KEYSER),
-                discord.SelectOption(label="Keyser - €10 / 40 zł", value="Keyser - 7 Days", emoji=PE_KEYSER),
-                discord.SelectOption(label="Keyser - €14 / 59 zł", value="Keyser - 1 Month", emoji=PE_KEYSER),
-                discord.SelectOption(label="Keyser - €35 / 148 zł", value="Keyser - Lifetime", emoji=PE_KEYSER)
+                discord.SelectOption(label="Keyser - €5 / 25 zł", value="Keyser - 1 Day", emoji=PE_KEYSER),
+                discord.SelectOption(label="Keyser - €10 / 45 zł", value="Keyser - 7 Days", emoji=PE_KEYSER),
+                discord.SelectOption(label="Keyser - €14 / 64 zł", value="Keyser - 1 Month", emoji=PE_KEYSER),
+                discord.SelectOption(label="Keyser - €35 / 153 zł", value="Keyser - Lifetime", emoji=PE_KEYSER)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -236,9 +236,9 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "Echo.fun":
             desc = (
                 "» **Ceny:**\n"
-                "> 7 Days - €4.3 / 18.5zł\n"
-                "> 1 Month - €8 / 35zł\n"
-                "> Lifetime - €17 / 73zł\n\n"
+                "> 7 Days - €4.3 / 23.5zł\n"
+                "> 1 Month - €8 / 40zł\n"
+                "> Lifetime - €17 / 78zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » 100% Niewykrywalne Hitboxy (Wszystkie serwery)\n"
                 "> ✅ » Niewykrywalny Silent Aim\n"
@@ -261,10 +261,10 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "Worm":
             desc = (
                 "» **Ceny:**\n"
-                "> 7 Days - €7 / 35zł\n"
-                "> 1 Month - €13 / 65zł\n"
-                "> 3 Months - €32 / 145zł\n"
-                "> Lifetime - €45 / 200zł\n\n"
+                "> 7 Days - €7 / 40zł\n"
+                "> 1 Month - €13 / 70zł\n"
+                "> 3 Months - €32 / 195zł\n"
+                "> Lifetime - €45 / 250zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Wbudowany Sp00er\n"
                 "> ✅ » Idealny pod Clowns.cool\n"
@@ -288,10 +288,10 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "Memesense":
             desc = (
                 "» **Ceny:**\n"
-                "> 14 Days - €4 / 18zł\n"
-                "> Monthly - €6 / 26zł\n"
-                "> 3 Months - €14.4 / 62zł\n"
-                "> 6 Months - €24 / 103zł\n\n"
+                "> 14 Days - €4 / 23zł\n"
+                "> Monthly - €6 / 31zł\n"
+                "> 3 Months - €14.4 / 67zł\n"
+                "> 6 Months - €24 / 108zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Jest niewykrywalny\n"
                 "> ✅ » Aimbot & Silent\n"
@@ -303,10 +303,10 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title="MEMESENSE", description=desc, color=discord.Color.blue())
             embed.set_image(url=CS_BANNER)
             p_options = [
-                discord.SelectOption(label="Memesense - €4 / 18zł", value="Memesense 14 Days", emoji=PE_MEMESENSE),
-                discord.SelectOption(label="Memesense - €6 / 26zł", value="Memesense Monthly", emoji=PE_MEMESENSE),
-                discord.SelectOption(label="Memesense - €14.4 / 62zł", value="Memesense 3 Months", emoji=PE_MEMESENSE),
-                discord.SelectOption(label="Memesense - €24 / 103zł", value="Memesense 6 Months", emoji=PE_MEMESENSE)
+                discord.SelectOption(label="Memesense - €4 / 23zł", value="Memesense 14 Days", emoji=PE_MEMESENSE),
+                discord.SelectOption(label="Memesense - €6 / 31zł", value="Memesense Monthly", emoji=PE_MEMESENSE),
+                discord.SelectOption(label="Memesense - €14.4 / 67zł", value="Memesense 3 Months", emoji=PE_MEMESENSE),
+                discord.SelectOption(label="Memesense - €24 / 108zł", value="Memesense 6 Months", emoji=PE_MEMESENSE)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -315,8 +315,8 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "FiveM Ready":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_FIVEM} x1 - €0.12 / 0.50zł\n"
-                f"> {PE_FIVEM} x5 +1 Gratis - €0.59 / 2.50zł\n\n"
+                f"> {PE_FIVEM} x1 - €0.12 / 5.50zł\n"
+                f"> {PE_FIVEM} x5 +1 Gratis - €0.59 / 7.50zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Full Acces\n"
                 "> ✅ » Gotowy do użycia\n"
@@ -326,8 +326,8 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"FIVEM READY {PE_FIVEM}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BANNER)
             p_options = [
-                discord.SelectOption(label="FiveM Ready x1 - €0.12 / 0.50 zł", value="FiveM Ready x1", emoji=PE_FIVEM),
-                discord.SelectOption(label="FiveM Ready x5+1 - €0.59 / 2.50 zł", value="FiveM Ready x5+1", emoji=PE_FIVEM)
+                discord.SelectOption(label="FiveM Ready x1 - €0.12 / 5.50 zł", value="FiveM Ready x1", emoji=PE_FIVEM),
+                discord.SelectOption(label="FiveM Ready x5+1 - €0.59 / 7.50 zł", value="FiveM Ready x5+1", emoji=PE_FIVEM)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -336,7 +336,7 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "Steam":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_STEAM} x1 - €0.04 / 0.15zł\n\n"
+                f"> {PE_STEAM} x1 - €0.04 / 5.15zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Full Acces\n"
                 "> ✅ » Gotowy do użycia\n"
@@ -345,7 +345,7 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"STE$M {PE_STEAM}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BANNER)
             p_options = [
-                discord.SelectOption(label="Steam x1 - €0.04 / 0.15 zł", value="Steam x1", emoji=PE_STEAM)
+                discord.SelectOption(label="Steam x1 - €0.04 / 5.15 zł", value="Steam x1", emoji=PE_STEAM)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -354,8 +354,8 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "D1scörd":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_DISCORD} Acc Email + Phone Verifi3d (For Sp00fing) - €0.2 / 0.90zł\n"
-                f"> {PE_DISCORD} TOken Email + Phone Verifi3d (YEAR AG3D) - €0.13 / 0.55zł\n\n"
+                f"> {PE_DISCORD} Acc Email + Phone Verifi3d (For Sp00fing) - €0.2 / 5.90zł\n"
+                f"> {PE_DISCORD} TOken Email + Phone Verifi3d (YEAR AG3D) - €0.13 / 5.55zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Full Acces\n"
                 "> ✅ » Gotowy do użycia\n"
@@ -364,8 +364,8 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"DISC$RD {PE_DISCORD}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BANNER)
             p_options = [
-                discord.SelectOption(label="Acc Verified - €0.2 / 0.90zł", value="Discord Acc", emoji=PE_DISCORD),
-                discord.SelectOption(label="Token Aged - €0.13 / 0.55zł", value="Discord Token", emoji=PE_DISCORD)
+                discord.SelectOption(label="Acc Verified - €0.2 / 5.90zł", value="Discord Acc", emoji=PE_DISCORD),
+                discord.SelectOption(label="Token Aged - €0.13 / 5.55zł", value="Discord Token", emoji=PE_DISCORD)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -374,8 +374,8 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "CS2 Prime Accounts":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_CS} Prime Ready - €1.4 / 6zł\n"
-                f"> {PE_CS} Premier Ready (4+ Medals) - €1.85 / 8zł\n\n"
+                f"> {PE_CS} Prime Ready - €1.4 / 11.00zł\n"
+                f"> {PE_CS} Premier Ready (4+ Medals) - €1.85 / 13.00zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Każde konto ma Prime\n"
                 "> ✅ » Gotowe do użycia\n"
@@ -385,8 +385,8 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"CS2 PRIME ACCOUNT {PE_CS}", description=desc, color=discord.Color.blue())
             embed.set_image(url=CS_BANNER)
             p_options = [
-                discord.SelectOption(label="Prime Ready - €1.4 / 6 zł", value="CS2 Prime Ready", emoji=PE_CS),
-                discord.SelectOption(label="Premier Ready (4+ Medals) - €1.85 / 8 zł", value="CS2 Premier Ready", emoji=PE_CS)
+                discord.SelectOption(label="Prime Ready - €1.4 / 11.00 zł", value="CS2 Prime Ready", emoji=PE_CS),
+                discord.SelectOption(label="Premier Ready (4+ Medals) - €1.85 / 13.00 zł", value="CS2 Premier Ready", emoji=PE_CS)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -395,10 +395,10 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "NexHub":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_NEXHUB} 1 Day - €1.7 / 7.5zł\n"
-                f"> {PE_NEXHUB} 7 Days - €4.3 / 18.5zł\n"
-                f"> {PE_NEXHUB} Month - €8.6 / 37zł\n"
-                f"> {PE_NEXHUB} 3 Months - €17.3 / 74.5zł\n\n"
+                f"> {PE_NEXHUB} 1 Day - €1.7 / 12.50zł\n"
+                f"> {PE_NEXHUB} 7 Days - €4.3 / 23.50zł\n"
+                f"> {PE_NEXHUB} Month - €8.6 / 42.00zł\n"
+                f"> {PE_NEXHUB} 3 Months - €17.3 / 79.50zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Działa na ShootGG & Clowns.Cool\n"
                 "> ✅ » 100+ Kraji\n"
@@ -408,10 +408,10 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"NEXHUB VPN {PE_NEXHUB}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BANNER)
             p_options = [
-                discord.SelectOption(label="Nexhub - €1.7 / 7.5 zł", value="Nexhub 1 Day", emoji=PE_NEXHUB),
-                discord.SelectOption(label="Nexhub - €4.3 / 18.5 zł", value="Nexhub 7 Days", emoji=PE_NEXHUB),
-                discord.SelectOption(label="Nexhub - €8.6 / 37 zł", value="Nexhub Month", emoji=PE_NEXHUB),
-                discord.SelectOption(label="Nexhub - €17.3 / 74.5 zł", value="Nexhub 3 Months", emoji=PE_NEXHUB)
+                discord.SelectOption(label="Nexhub - €1.7 / 12.50 zł", value="Nexhub 1 Day", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €4.3 / 23.50 zł", value="Nexhub 7 Days", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €8.6 / 42.00 zł", value="Nexhub Month", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €17.3 / 79.50 zł", value="Nexhub 3 Months", emoji=PE_NEXHUB)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -420,7 +420,7 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "IP Vanish":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_IPVANISH} Year - €1 / 4.5zł\n\n"
+                f"> {PE_IPVANISH} Year - €1 / 9.50zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Full Acces\n"
                 "> ✅ » Gotowy do użycia"
@@ -428,7 +428,7 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"IPVAN$SH {PE_IPVANISH}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BANNER)
             p_options = [
-                discord.SelectOption(label="IP Vanish - €1 / 4.5 zł", value="IP Vanish Year", emoji=PE_IPVANISH)
+                discord.SelectOption(label="IP Vanish - €1 / 9.50 zł", value="IP Vanish Year", emoji=PE_IPVANISH)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -437,8 +437,8 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "FiveM Bundle":
             desc = (
                 "» **Ceny:**\n"
-                "> ⁠Zwykłe Bundle × €0.47 / 1.00zł\n"
-                "> ⁠Aged Bundle × €0.35 / 1.50zł\n\n"
+                "> ⁠Zwykłe Bundle × €0.47 / 3.99zł\n"
+                "> ⁠Aged Bundle × €0.35 / 9.99zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Pakiet Rockst$r + Dsc + St$am\n"
                 "> ✅ » Full Acces\n"
@@ -448,8 +448,8 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title="FIVEEM BUNDLE", description=desc, color=discord.Color.blue())
             embed.set_image(url=BUNDLE_BANNER)
             p_options = [
-                discord.SelectOption(label="Zwykle - €0.47 / 1.00 zł", value="FiveM Bundle Zwykle", emoji=PE_FIVEM),
-                discord.SelectOption(label="Aged - €0.35 / 1.50 zł", value="FiveM Bundle Aged", emoji=PE_FIVEM)
+                discord.SelectOption(label="Zwykle - €0.47 / 3.99 zł", value="FiveM Bundle Zwykle", emoji=PE_FIVEM),
+                discord.SelectOption(label="Aged - €0.35 / 9.99 zł", value="FiveM Bundle Aged", emoji=PE_FIVEM)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
@@ -458,8 +458,8 @@ class ShopSelect(discord.ui.Select):
         elif product_name == "D1scörd Bundle":
             desc = (
                 "» **Ceny:**\n"
-                f"> {PE_DISCORD} x3 × €0.70 / 3zł\n"
-                f"> {PE_DISCORD} x10 × €1.9 / 8zł\n\n"
+                f"> {PE_DISCORD} x3 × €0.70 / 3.99zł\n"
+                f"> {PE_DISCORD} x10 × €1.9 / 9.99zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » Full Acces\n"
                 "> ✅ » Gotowy do użycia\n"
@@ -468,8 +468,8 @@ class ShopSelect(discord.ui.Select):
             embed = discord.Embed(title=f"DISCORD BUNDLE {PE_DISCORD}", description=desc, color=discord.Color.blue())
             embed.set_image(url=BUNDLE_BANNER)
             p_options = [
-                discord.SelectOption(label="Discord Bundle - €0.70 / 2.99 zł", value="Discord Bundle 3 acc", emoji=PE_DISCORD),
-                discord.SelectOption(label="Discord Bundle - €1.87 / 7.99 zł", value="Discord Bundle 10 acc", emoji=PE_DISCORD)
+                discord.SelectOption(label="Discord Bundle - €0.70 / 3.99 zł", value="Discord Bundle 3 acc", emoji=PE_DISCORD),
+                discord.SelectOption(label="Discord Bundle - €1.87 / 9.99 zł", value="Discord Bundle 10 acc", emoji=PE_DISCORD)
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
