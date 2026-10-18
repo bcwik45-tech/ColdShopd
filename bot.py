@@ -46,9 +46,9 @@ class VeloxShopBot(commands.Bot):
     async def setup_hook(self):
         try:
             await self.tree.sync()
-            print("✅ [VELOX SHOP] Komendy zsynchronizowane globalnie!")
+            print("Komendy zsynchronizowane globalnie!")
         except Exception as e:
-            print(f"⚠️ Błąd synchronizacji komend: {e}")
+            print(f"Blad synchronizacji komend: {e}")
 
 bot = VeloxShopBot()
 
@@ -63,14 +63,14 @@ async def on_member_join(member: discord.Member):
     joined_at = member.joined_at.strftime("%d.%m.%Y %H:%M:%S") if member.joined_at else "Brak"
 
     desc = (
-        f"🎉 Hi {member.mention}\n"
-        "Welcome to **Velox Shop**!\n"
+        f"Hi {member.mention}\n"
+        "Welcome to Velox Shop!\n"
         "Go check out our stuff!\n\n"
-        f"**You're our {member_count} member!**\n\n"
-        "**Member Info:**\n"
-        f"🪪 **Discord account created:**\n`{created_at}`\n"
-        f"👤 **Username:** {member.name}\n"
-        f"📅 **Joined at:** `{joined_at}`"
+        f"You are our {member_count} member!\n\n"
+        "Member Info:\n"
+        f"Discord account created:\n`{created_at}`\n"
+        f"Username: {member.name}\n"
+        f"Joined at: `{joined_at}`"
     )
 
     embed = discord.Embed(title="New member!", description=desc, color=discord.Color.dark_embed())
@@ -165,15 +165,15 @@ class TicketView(discord.ui.View):
             title=f"Ticket: {ticket_type.upper()}",
             description=(
                 f"Witaj {user.mention}!\n"
-                "Administracja wkrótce odpowie na Twoje zgłoszenie.\n\n"
-                "Aby zamknąć ten kanał, kliknij przycisk poniżej."
+                "Administracja wkrotce odpowie na Twoje zgloszenie.\n\n"
+                "Aby zamknac ten kanal, kliknij przycisk ponizej."
             ),
             color=discord.Color.blue()
         )
         
         ping_content = f"{user.mention} " + " ".join(roles_to_ping)
         await ch.send(content=ping_content, embed=embed, view=CloseView())
-        await inter.followup.send(f"✅ Stworzono ticket: {ch.mention}", ephemeral=True)
+        await inter.followup.send(f"Stworzono ticket: {ch.mention}", ephemeral=True)
 
     @discord.ui.button(label="Shop", emoji="🛒", style=discord.ButtonStyle.success, custom_id="t_shop")
     async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
@@ -202,19 +202,4 @@ class PurchaseSelect(discord.ui.Select):
     async def callback(self, inter: discord.Interaction):
         await inter.response.defer(ephemeral=True)
         product_variant = self.values[0]
-        category = inter.guild.get_channel(CAT_SUPPORT)
-        ch = await inter.guild.create_text_channel(
-            name=f"🛒-ticket-{inter.user.name.lower()}",
-            category=category,
-            overwrites={
-                inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-                inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
-                inter.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
-            }
-        )
-        embed = discord.Embed(
-            title="Ticket: SHOP",
-            description=(
-                f"Witaj {inter.user.mention}!\n"
-                f"Otworzyłeś ticket zakupowy dla: **{product_variant}**.\n"
-                "Administracja wkrót
+        category
