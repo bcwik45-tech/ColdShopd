@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-DROP_CH = 1557163203740438628       
+DROP_CH = 1561325772587925514       # Zaktualizowany kanał dropu
 WELCOME_CH = 1557150071177347152   
-VERIFY_ROLE_ID = 1456459830494630102  # Rola weryfikacji
+VERIFY_ROLE_ID = 1456459830494630102  
 
 # ID KATEGORII TICKETÓW
 CAT_OWNER = 1561333304131715112
@@ -65,7 +65,7 @@ async def on_member_join(member: discord.Member):
 
     await ch.send(embed=embed)
 
-# --- WIDOKI I SYSTEM TICKETÓW Z KATEGORIAMI I ROLAMI ---
+# --- WIDOKI I SYSTEM TICKETÓW (BEZ GIFA, Z IKONKĄ W NAZWIE KANAŁU) ---
 class CloseView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -80,12 +80,11 @@ class TicketView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    async def create_ticket(self, inter: discord.Interaction, ticket_type: str):
+    async def create_ticket(self, inter: discord.Interaction, ticket_type: str, emoji: str):
         await inter.response.defer(ephemeral=True)
         guild = inter.guild
         user = inter.user
 
-        # Konfiguracja uprawnień i kategorii w zależności od typu ticketa
         roles_to_ping = []
         category_id = None
         overwrites = {
@@ -141,15 +140,22 @@ class TicketView(discord.ui.View):
 
         category = guild.get_channel(category_id) if category_id else None
 
+        # Nazwa kanału z ikonką kategorii (np. 🛒-ticket-shop-nazwa)
+        ch_name = f"{emoji}-ticket-{ticket_type.lower()}-{user.name.lower()}"
+
         ch = await guild.create_text_channel(
-            name=f"ticket-{ticket_type.lower()}-{user.name.lower()}",
+            name=ch_name,
             category=category,
             overwrites=overwrites
         )
 
         embed = discord.Embed(
-            title=f"🎟️ Velox Shop Ticket: {ticket_type}",
-            description=f"Witaj {user.mention}!\nOtworzyłeś ticket typu: **{ticket_type}**.",
+            title=f"Ticket: {ticket_type.upper()}",
+            description=(
+                f"Witaj {user.mention}!\n"
+                "Administracja wkrótce odpowie na Twoje zgłoszenie.\n\n"
+                "Aby zamknąć ten kanał, kliknij przycisk poniżej."
+            ),
             color=discord.Color.blue()
         )
         
@@ -159,23 +165,23 @@ class TicketView(discord.ui.View):
 
     @discord.ui.button(label="Shop", emoji="🛒", style=discord.ButtonStyle.success, custom_id="t_shop")
     async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Shop")
+        await self.create_ticket(inter, "Shop", "🛒")
 
     @discord.ui.button(label="Owner", emoji="👑", style=discord.ButtonStyle.secondary, custom_id="t_owner")
     async def owner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Owner")
+        await self.create_ticket(inter, "Owner", "👑")
 
     @discord.ui.button(label="Support", emoji="❓", style=discord.ButtonStyle.primary, custom_id="t_support")
     async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Support")
+        await self.create_ticket(inter, "Support", "❓")
 
     @discord.ui.button(label="Recruitment", emoji="📄", style=discord.ButtonStyle.danger, custom_id="t_recruitment")
     async def recruit_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Recruitment")
+        await self.create_ticket(inter, "Recruitment", "📄")
 
     @discord.ui.button(label="Partnership", emoji="🤝", style=discord.ButtonStyle.secondary, custom_id="t_partnership")
     async def partner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
-        await self.create_ticket(inter, "Partnership")
+        await self.create_ticket(inter, "Partnership", "🤝")
 
 class VerifyView(discord.ui.View):
     def __init__(self):
@@ -201,7 +207,7 @@ class ShopSelect(discord.ui.Select):
         product_name = self.values[0]
         category = inter.guild.get_channel(CAT_SUPPORT)
         ch = await inter.guild.create_text_channel(
-            name=f"ticket-{inter.user.name.lower()}",
+            name=f"🛒-ticket-{inter.user.name.lower()}",
             category=category,
             overwrites={
                 inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
@@ -210,8 +216,13 @@ class ShopSelect(discord.ui.Select):
             }
         )
         embed = discord.Embed(
-            title=f"💎 Velox Shop Ticket: {product_name}",
-            description=f"Witaj {inter.user.mention}!\nOtworzyłeś ticket zakupowy dla: **{product_name}**.",
+            title=f"Ticket: SHOP",
+            description=(
+                f"Witaj {inter.user.mention}!\n"
+                f"Otworzyłeś ticket zakupowy dla: **{product_name}**.\n"
+                "Administracja wkrótce odpowie na Twoje zgłoszenie.\n\n"
+                "Aby zamknąć ten kanał, kliknij przycisk poniżej."
+            ),
             color=discord.Color.blue()
         )
         role_shop = inter.guild.get_role(1456459709405204542)
@@ -224,21 +235,43 @@ class LegitView(discord.ui.View):
         super().__init__(timeout=None)
         self.y, self.n = 0, 0
 
-    @discord.ui.button(label="0", emoji="✅", style=discord.ButtonStyle.success, custom_id="leg_y")
+    @discord.ui.button(label="0", emoji="✅", style=discord.ButtonStyle.secondary, custom_id="leg_y")
     async def yes(self, inter: discord.Interaction, btn: discord.ui.Button):
         self.y += 1
         btn.label = str(self.y)
         await inter.response.edit_message(view=self)
         await inter.followup.send("Dzięki za głos!", ephemeral=True)
 
-    @discord.ui.button(label="0", emoji="❌", style=discord.ButtonStyle.danger, custom_id="leg_n")
+    @discord.ui.button(label="0", emoji="🔖", style=discord.ButtonStyle.secondary, custom_id="leg_n")
     async def no(self, inter: discord.Interaction, btn: discord.ui.Button):
         self.n += 1
         btn.label = str(self.n)
         await inter.response.edit_message(view=self)
         await inter.followup.send("Dzięki za głos!", ephemeral=True)
 
-# --- KOMENDY SETUPU I MODERACJI ---
+# --- KOMENDY SETUPU, SAY I MODERACJI ---
+
+@bot.tree.command(name="say", description="Wysyła podaną wiadomość na kanale")
+@app_commands.checks.has_permissions(administrator=True)
+@app_commands.describe(message="Treść wiadomości do wysłania")
+async def say(inter: discord.Interaction, message: str):
+    await inter.channel.send(message)
+    await inter.response.send_message("✅ Wysyłano wiadomość!", ephemeral=True)
+
+@bot.tree.command(name="setup_legitchecks", description="Panel legit check z opcją oceniania")
+@app_commands.checks.has_permissions(administrator=True)
+async def sl(inter: discord.Interaction):
+    await inter.response.defer(ephemeral=True)
+    
+    desc = (
+        "📢 **Jeżeli uważasz, że jesteśmy legit, zaznacz reakcję ✅ pod tą wiadomością.**\n"
+        "🔔 **Zaznaczenie reakcji 🔖 będzie skutkować otrzymaniem przerwy na okres 7 dni.**"
+    )
+    
+    embed = discord.Embed(title="🕵️ CZY JESTEŚMY LEGIT?", description=desc, color=discord.Color.blue())
+    embed.set_image(url=BANNER)
+    await inter.channel.send(embed=embed, view=LegitView())
+    await inter.followup.send("Gotowe!", ephemeral=True)
 
 @bot.tree.command(name="setup_tickets", description="Panel systemowy ticketów")
 @app_commands.checks.has_permissions(administrator=True)
@@ -290,15 +323,6 @@ async def setup_verify(inter: discord.Interaction):
     embed = discord.Embed(title="Verification", description=desc, color=discord.Color.dark_embed())
     embed.set_image(url=BANNER)
     await inter.channel.send(embed=embed, view=VerifyView())
-    await inter.followup.send("Gotowe!", ephemeral=True)
-
-@bot.tree.command(name="setup_legitchecks", description="Panel legit check")
-@app_commands.checks.has_permissions(administrator=True)
-async def sl(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
-    embed = discord.Embed(title="⭐ VELOX SHOP × LEGIT CHECK", description="Kliknij ✅ lub ❌", color=discord.Color.blue())
-    embed.set_image(url=BANNER)
-    await inter.channel.send(embed=embed, view=LegitView())
     await inter.followup.send("Gotowe!", ephemeral=True)
 
 @bot.tree.command(name="setup_bundle", description="Panel Bundle & Accounts")
