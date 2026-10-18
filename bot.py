@@ -182,7 +182,7 @@ class ShopSelect(discord.ui.Select):
         product_name = self.values[0]
 
         if product_name == "Red Engine":
-            desc = "Ceny:\n> 7 Days - €8 / 34zl\n> 1 Month - €15 / 64zl\n> Lifetime - €40 / 170zl\n\nKrotki Opis:\n> Jest to Temp Sp00er\n> Unban na wszystkie Serwery"
+            desc = "» **Ceny:**\n> 7 Days - €8 / 34zł\n> 1 Month - €15 / 64zł\n> Lifetime - €40 / 170zł\n\n» **Krótki Opis:**\n> ✅ » Jest to Temp Sp00er\n> ✅ » Unban na wszystkie Serwery\n> ✅ » Tx/EasyAdmin Unban\n> ✅ » Sprawdzony oraz Działający"
             embed = discord.Embed(title="REDENGINE", description=desc, color=discord.Color.blue())
             embed.set_image(url=SPOOFER_BANNER)
             p_options = [
@@ -195,7 +195,7 @@ class ShopSelect(discord.ui.Select):
             await inter.followup.send(embed=embed, view=v)
 
         elif product_name == "Keyser":
-            desc = "Ceny:\n> 1 Day - €5 / 20zl\n> 7 Days - €10 / 40zl\n> 1 Month - €14 / 59zl\n> Lifetime - €35 / 148zl\n\nKrotki Opis:\n> Wbudowany Sp00er\n> Opcje pod Trolling"
+            desc = "» **Ceny:**\n> 1 Day - €5 / 20zł\n> 7 Days - €10 / 40zł\n> 1 Month - €14 / 59zł\n> Lifetime - €35 / 148zł\n\n» **Krótki Opis:**\n> ✅ » Wbudowany Sp00er\n> ✅ » Opcje pod Trolling\n> ✅ » Free Cam z Opcjami\n> ✅ » Kill Everyone\n> ✅ » Kill Player\n> ✅ » Event Executor & Logger"
             embed = discord.Embed(title="KEYSER", description=desc, color=discord.Color.blue())
             embed.set_image(url=CHEAT_BANNER)
             p_options = [
@@ -209,7 +209,7 @@ class ShopSelect(discord.ui.Select):
             await inter.followup.send(embed=embed, view=v)
 
         elif product_name == "Echo.fun":
-            desc = "Ceny:\n> 7 Days - €4.3 / 18.5zl\n> 1 Month - €8 / 35zl\n> Lifetime - €17 / 73zl\n\nKrotki Opis:\n> Niewykrywalny Silent Aim\n> Lua Executor"
+            desc = "» **Ceny:**\n> 7 Days - €4.3 / 18.5zł\n> 1 Month - €8 / 35zł\n> Lifetime - €17 / 73zł\n\n» **Krótki Opis:**\n> ✅ » 100% Niewykrywalne Hitboxy (Wszystkie serwery)\n> ✅ » Niewykrywalny Silent Aim\n> ✅ » Idealne pod Shootgg & Clowns\n> ✅ » Idealne ESPY\n> ✅ » Lua Executor\n> ✅ » Prosty w konfiguracji"
             embed = discord.Embed(title="ECHOFUN", description=desc, color=discord.Color.blue())
             embed.set_image(url=CHEAT_BANNER)
             p_options = [
@@ -222,7 +222,7 @@ class ShopSelect(discord.ui.Select):
             await inter.followup.send(embed=embed, view=v)
 
         elif product_name == "Worm":
-            desc = "Ceny:\n> 7 Days - €7 / 35zl\n> 1 Month - €13 / 65zl\n> 3 Months - €32 / 145zl\n> Lifetime - €45 / 200zl"
+            desc = "» **Ceny:**\n> 7 Days - €7 / 35zł\n> 1 Month - €13 / 65zł\n> 3 Months - €32 / 145zł\n> Lifetime - €45 / 200zł\n\n» **Krótki Opis:**\n> ✅ » Wbudowany Sp00er\n> ✅ » Idealny pod Clowns.cool\n> ✅ » Niewykrywalny Silent Aim\n> ✅ » Lua Executor\n> ✅ » Prosty do konfiguracji\n> ✅ » Typowo pod PVP"
             embed = discord.Embed(title="WORM", description=desc, color=discord.Color.blue())
             embed.set_image(url=CHEAT_BANNER)
             p_options = [
