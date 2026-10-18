@@ -74,7 +74,11 @@ class CloseView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="Zamknij", style=discord.ButtonStyle.danger, custom_id="close_t")
+    @discord.ui.button(
+        label="Zamknij", 
+        style=discord.ButtonStyle.danger, 
+        custom_id="close_t"
+    )
     async def close(self, inter: discord.Interaction, btn: discord.ui.Button):
         await inter.response.send_message("Usuwanie ticketa za 3 sekundy...", ephemeral=True)
         await asyncio.sleep(3)
@@ -110,21 +114,41 @@ class TicketView(discord.ui.View):
                 roles_to_ping.append(role.mention)
 
         category = guild.get_channel(category_id) if category_id else None
-        ch = await guild.create_text_channel(name=f"ticket-{ticket_type.lower()}-{user.name.lower()}", category=category, overwrites=overwrites)
+        ch = await guild.create_text_channel(
+            name=f"ticket-{ticket_type.lower()}-{user.name.lower()}", 
+            category=category, 
+            overwrites=overwrites
+        )
 
-        embed = discord.Embed(title=f"Ticket: {ticket_type.upper()}", description=f"Witaj {user.mention}!\nAdministracja odpowie wkrótce.", color=discord.Color.blue())
+        embed = discord.Embed(
+            title=f"Ticket: {ticket_type.upper()}", 
+            description=f"Witaj {user.mention}!\nAdministracja odpowie wkrótce.", 
+            color=discord.Color.blue()
+        )
         await ch.send(content=f"{user.mention} " + " ".join(roles_to_ping), embed=embed, view=CloseView())
         await inter.followup.send(f"Stworzono ticket: {ch.mention}", ephemeral=True)
 
-    @discord.ui.button(label="Shop", style=discord.ButtonStyle.success, custom_id="t_shop")
+    @discord.ui.button(
+        label="Shop", 
+        style=discord.ButtonStyle.success, 
+        custom_id="t_shop"
+    )
     async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
         await self.create_ticket(inter, "Shop")
 
-    @discord.ui.button(label="Owner", style=discord.ButtonStyle.secondary, custom_id="t_owner")
+    @discord.ui.button(
+        label="Owner", 
+        style=discord.ButtonStyle.secondary, 
+        custom_id="t_owner"
+    )
     async def owner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
         await self.create_ticket(inter, "Owner")
 
-    @discord.ui.button(label="Support", style=discord.ButtonStyle.primary, custom_id="t_support")
+    @discord.ui.button(
+        label="Support", 
+        style=discord.ButtonStyle.primary, 
+        custom_id="t_support"
+    )
     async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
         await self.create_ticket(inter, "Support")
 
@@ -135,12 +159,20 @@ class PurchaseSelect(discord.ui.Select):
     async def callback(self, inter: discord.Interaction):
         await inter.response.defer(ephemeral=True)
         category = inter.guild.get_channel(CAT_SUPPORT)
-        ch = await inter.guild.create_text_channel(name=f"ticket-{inter.user.name.lower()}", category=category, overwrites={
-            inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-            inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
-            inter.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
-        })
-        embed = discord.Embed(title="Ticket: SHOP", description=f"Witaj {inter.user.mention}! Wybrałeś: **{self.values[0]}**", color=discord.Color.blue())
+        ch = await inter.guild.create_text_channel(
+            name=f"ticket-{inter.user.name.lower()}", 
+            category=category, 
+            overwrites={
+                inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
+                inter.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
+            }
+        )
+        embed = discord.Embed(
+            title="Ticket: SHOP", 
+            description=f"Witaj {inter.user.mention}! Wybrałeś: **{self.values[0]}**", 
+            color=discord.Color.blue()
+        )
         await ch.send(content=f"{inter.user.mention}", embed=embed, view=CloseView())
         await inter.followup.send(f"Stworzono ticket: {ch.mention}", ephemeral=True)
 
@@ -151,7 +183,11 @@ class ShopSelect(discord.ui.Select):
     async def callback(self, inter: discord.Interaction):
         await inter.response.defer(ephemeral=True)
         product_name = self.values[0]
-        embed = discord.Embed(title=f"Produkt: {product_name}", description="Wybierz opcję poniżej:", color=discord.Color.blue())
+        embed = discord.Embed(
+            title=f"Produkt: {product_name}", 
+            description="Wybierz opcję poniżej:", 
+            color=discord.Color.blue()
+        )
         embed.set_image(url=BANNER)
         p_options = [discord.SelectOption(label=f"Kup {product_name}", value=product_name)]
         v = discord.ui.View(timeout=None)
@@ -162,7 +198,11 @@ class VerifyView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="Verify", style=discord.ButtonStyle.success, custom_id="verify_btn")
+    @discord.ui.button(
+        label="Verify", 
+        style=discord.ButtonStyle.success, 
+        custom_id="verify_btn"
+    )
     async def verify(self, inter: discord.Interaction, btn: discord.ui.Button):
         if VERIFY_ROLE_ID != 0:
             role = inter.guild.get_role(VERIFY_ROLE_ID)
@@ -178,63 +218,12 @@ class LegitView(discord.ui.View):
         super().__init__(timeout=None)
         self.y, self.n = 0, 0
 
-    @discord.ui.button(label="0", style=discord.ButtonStyle.secondary, custom_id="leg_y")
+    @discord.ui.button(
+        label="0", 
+        style=discord.ButtonStyle.secondary, 
+        custom_id="leg_y"
+    )
     async def yes(self, inter: discord.Interaction, btn: discord.ui.Button):
         self.y += 1
         btn.label = str(self.y)
         await inter.response.edit_message(view=self)
-        await inter.followup.send("Dzieki za glos!", ephemeral=True)
-
-    @discord.ui.button(label="0", style=discord.ButtonStyle.secondary, custom_id="leg_n")
-    async def no(self, inter: discord.Interaction, btn: discord.ui.Button):
-        self.n += 1
-        btn.label = str(self.n)
-        await inter.response.edit_message(view=self)
-        await inter.followup.send("Dzieki za glos!", ephemeral=True)
-
-@bot.tree.command(name="setup_tickets", description="Panel ticketow")
-@app_commands.checks.has_permissions(administrator=True)
-async def setup_tickets(inter: discord.Interaction):
-    embed = discord.Embed(title="Tickets", description="Kliknij przycisk poniżej, aby otworzyć ticket.", color=discord.Color.dark_embed())
-    await inter.response.send_message(embed=embed, view=TicketView())
-
-@bot.tree.command(name="setup_verify", description="Panel weryfikacji")
-@app_commands.checks.has_permissions(administrator=True)
-async def setup_verify(inter: discord.Interaction):
-    embed = discord.Embed(title="Verification", description="Zweryfikuj się poniżej.", color=discord.Color.dark_embed())
-    await inter.response.send_message(embed=embed, view=VerifyView())
-
-@bot.tree.command(name="setup_bundle", description="Panel Bundle & Accounts")
-@app_commands.checks.has_permissions(administrator=True)
-async def sb(inter: discord.Interaction):
-    options = [
-        discord.SelectOption(label="FiveM Ready", value="FiveM Ready"),
-        discord.SelectOption(label="Steam", value="Steam"),
-        discord.SelectOption(label="D1scörd", value="D1scörd"),
-        discord.SelectOption(label="IP Vanish", value="IP Vanish"),
-        discord.SelectOption(label="NexHub", value="NexHub")
-    ]
-    v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(options))
-    embed = discord.Embed(title="Velox Products x PREMIUM", description="Wybierz produkt z listy poniżej:", color=discord.Color.blue())
-    embed.set_image(url=BUNDLE_BANNER)
-    await inter.response.send_message(embed=embed, view=v)
-
-@bot.tree.command(name="setup_cheats", description="Panel FiveM Cheats")
-@app_commands.checks.has_permissions(administrator=True)
-async def scheats(inter: discord.Interaction):
-    options = [
-        discord.SelectOption(label="Echo.fun", value="Echo.fun", description="Echo.fun Cheat", emoji=PE_ECHO),
-        discord.SelectOption(label="Ambani", value="Ambani", description="Ambani Cheat", emoji=PE_AMBANI),
-        discord.SelectOption(label="Worm", value="Worm", description="Worm Cheat", emoji=PE_WORM)
-    ]
-    v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(options))
-    desc = "Cheats available from us:\n> • Echo.fun\n> • Ambani\n> • Worm\n\nSelect the cheat you are interested in."
-    embed = discord.Embed(title="Velox Products x FiveM Cheats", description=desc, color=discord.Color.blue())
-    embed.set_image(url=CHEAT_BANNER)
-    await inter.response.send_message(embed=embed, view=v)
-
-@bot.tree.command(name="setup_spoofer", description="Panel FiveM Spoofer")
-@app_commands.checks.has_permissions(administrator=True)
-async def sspoof(inter: discord.Interaction
