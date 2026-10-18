@@ -239,4 +239,292 @@ class ShopSelect(discord.ui.Select):
                 "> Lifetime - €17 / 73zł\n\n"
                 "» **Krótki Opis:**\n"
                 "> ✅ » 100% Niewykrywalne Hitboxy (Wszystkie serwery)\n"
-                "> ✅ » Niew
+                "> ✅ » Niewykrywalny Silent Aim\n"
+                "> ✅ » Idealne pod Shootgg & Clowns\n"
+                "> ✅ » Idealne ESPY\n"
+                "> ✅ » Lua Executor\n"
+                "> ✅ » Prosty w konfiguracji"
+            )
+            embed = discord.Embed(title="ECHOFUN", description=desc, color=discord.Color.blue())
+            embed.set_image(url=CHEAT_BANNER)
+            p_options = [
+                discord.SelectOption(label="Echo - 7 Days", value="Echo Weekly", emoji=PE_ECHO),
+                discord.SelectOption(label="Echo - 1 Month", value="Echo Monthly", emoji=PE_ECHO),
+                discord.SelectOption(label="Echo - Lifetime", value="Echo Lifetime", emoji=PE_ECHO)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.followup.send(embed=embed, view=v)
+
+        elif product_name == "Worm":
+            desc = (
+                "» **Ceny:**\n"
+                "> 7 Days - €7 / 35zł\n"
+                "> 1 Month - €13 / 65zł\n"
+                "> 3 Months - €32 / 145zł\n"
+                "> Lifetime - €45 / 200zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Wbudowany Sp00er\n"
+                "> ✅ » Idealny pod Clowns.cool\n"
+                "> ✅ » Niewykrywalny Silent Aim\n"
+                "> ✅ » Lua Executor\n"
+                "> ✅ » Prosty do konfiguracji\n"
+                "> ✅ » Typowo pod PVP"
+            )
+            embed = discord.Embed(title="WORM", description=desc, color=discord.Color.blue())
+            embed.set_image(url=CHEAT_BANNER)
+            p_options = [
+                discord.SelectOption(label="Worm - 7 Days", value="Worm 7 Days", emoji=PE_WORM),
+                discord.SelectOption(label="Worm - 1 Month", value="Worm 1 Month", emoji=PE_WORM),
+                discord.SelectOption(label="Worm - 3 Months", value="Worm 3 Months", emoji=PE_WORM),
+                discord.SelectOption(label="Worm - Lifetime", value="Worm Lifetime", emoji=PE_WORM)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.followup.send(embed=embed, view=v)
+
+        elif product_name == "Memesense":
+            desc = (
+                "» **Ceny:**\n"
+                "> 14 Days - €4 / 18zł\n"
+                "> Monthly - €6 / 26zł\n"
+                "> 3 Months - €14.4 / 62zł\n"
+                "> 6 Months - €24 / 103zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Jest niewykrywalny\n"
+                "> ✅ » Aimbot & Silent\n"
+                "> ✅ » Ładne Espy\n"
+                "> ✅ » Typowo pod Legit/semi rage\n"
+                "> ✅ » Gotowy do użycia\n"
+                "> ✅ » Prosty do konfiguracji"
+            )
+            embed = discord.Embed(title="MEMESENSE", description=desc, color=discord.Color.blue())
+            embed.set_image(url=CS_BANNER)
+            p_options = [
+                discord.SelectOption(label="Memesense - €4 / 18zł", value="Memesense 14 Days", emoji=PE_MEMESENSE),
+                discord.SelectOption(label="Memesense - €6 / 26zł", value="Memesense Monthly", emoji=PE_MEMESENSE),
+                discord.SelectOption(label="Memesense - €14.4 / 62zł", value="Memesense 3 Months", emoji=PE_MEMESENSE),
+                discord.SelectOption(label="Memesense - €24 / 103zł", value="Memesense 6 Months", emoji=PE_MEMESENSE)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.followup.send(embed=embed, view=v)
+
+        else:
+            embed = discord.Embed(title=f"Produkt: {product_name}", description="Wybierz opcję poniżej:", color=discord.Color.blue())
+            embed.set_image(url=BANNER)
+            p_options = [discord.SelectOption(label=f"Kup {product_name}", value=product_name)]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.followup.send(embed=embed, view=v)
+
+class VerifyView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(label="Verify", style=discord.ButtonStyle.success, emoji="✅", custom_id="verify_btn")
+    async def verify(self, inter: discord.Interaction, btn: discord.ui.Button):
+        if VERIFY_ROLE_ID != 0:
+            role = inter.guild.get_role(VERIFY_ROLE_ID)
+            if role:
+                try:
+                    await inter.user.add_roles(role)
+                except Exception:
+                    pass
+        await inter.response.send_message("Zweryfikowano pomyślnie!", ephemeral=True)
+
+class LegitView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        self.y, self.n = 0, 0
+
+    @discord.ui.button(label="0", style=discord.ButtonStyle.secondary, custom_id="leg_y")
+    async def yes(self, inter: discord.Interaction, btn: discord.ui.Button):
+        self.y += 1
+        btn.label = str(self.y)
+        await inter.response.edit_message(view=self)
+        await inter.followup.send("Dzieki za glos!", ephemeral=True)
+
+    @discord.ui.button(label="0", style=discord.ButtonStyle.secondary, custom_id="leg_n")
+    async def no(self, inter: discord.Interaction, btn: discord.ui.Button):
+        self.n += 1
+        btn.label = str(self.n)
+        await inter.response.edit_message(view=self)
+        await inter.followup.send("Dzieki za glos!", ephemeral=True)
+
+@bot.tree.command(name="setup_tickets", description="Panel ticketow")
+@app_commands.checks.has_permissions(administrator=True)
+async def setup_tickets(inter: discord.Interaction):
+    embed = discord.Embed(title="Tickets", description="Kliknij przycisk poniżej, aby otworzyć ticket.", color=discord.Color.dark_embed())
+    await inter.response.send_message(embed=embed, view=TicketView())
+
+@bot.tree.command(name="setup_verify", description="Panel weryfikacji")
+@app_commands.checks.has_permissions(administrator=True)
+async def setup_verify(inter: discord.Interaction):
+    desc = (
+        "Welcome to **COLDCFG**! 🧊\n\n"
+        "To gain access to the rest of the server and unlock all channels, please verify your account by clicking the button below.\n\n"
+        "🔒 **Security Check:** Automated protection is active.\n"
+        "⚡ **Access:** Instant role assignment upon verification.\n\n"
+        "Click the button below to verify yourself."
+    )
+    embed = discord.Embed(title="Verification", description=desc, color=discord.Color.from_rgb(46, 204, 113))
+    embed.set_image(url=VERIFY_BANNER)
+    await inter.response.send_message(embed=embed, view=VerifyView())
+
+@bot.tree.command(name="setup_bundle", description="Panel Bundle & Accounts")
+@app_commands.checks.has_permissions(administrator=True)
+async def sb(inter: discord.Interaction):
+    options = [
+        discord.SelectOption(label="FiveM Ready", value="FiveM Ready", emoji=PE_FIVEM),
+        discord.SelectOption(label="Steam", value="Steam", emoji=PE_STEAM),
+        discord.SelectOption(label="D1scörd", value="D1scörd", emoji=PE_DISCORD),
+        discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", emoji=PE_CS),
+        discord.SelectOption(label="IP Vanish", value="IP Vanish", emoji=PE_IPVANISH),
+        discord.SelectOption(label="NexHub", value="NexHub", emoji=PE_NEXHUB),
+        discord.SelectOption(label="Windscribe", value="Windscribe", emoji="🌐")
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(options))
+    
+    desc = (
+        "💎 ⁠`Silent Products × PREMIUM`\n\n"
+        "Accounts **available** from us:\n"
+        "> • " + str(PE_FIVEM) + " x FiveM Ready\n"
+        "> • " + str(PE_STEAM) + " x Steam\n"
+        "> • " + str(PE_DISCORD) + " x D1scörd\n"
+        "> • " + str(PE_CS) + " x CS2 Prime Accounts\n\n"
+        "VPN's **available** from us:\n"
+        "> • " + str(PE_IPVANISH) + " x IP Vanish\n"
+        "> • " + str(PE_NEXHUB) + " x NexHub\n"
+        "> • 🌐 x Windscribe\n\n"
+        "📢 **Select** the product you are **interested** in.\n"
+        "📢 At the **bottom** of the `select menu`, select **duration** and **payment**.\n\n"
+        "🌐 **Instant Buy:** [Click here to visit our website](https://google.com)"
+    )
+    
+    embed = discord.Embed(title="", description=desc, color=discord.Color.blue())
+    embed.set_image(url=BUNDLE_BANNER)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_bundle2", description="Panel Bundle 2")
+@app_commands.checks.has_permissions(administrator=True)
+async def sb2(inter: discord.Interaction):
+    options = [
+        discord.SelectOption(label="FiveM Bundle", value="FiveM Bundle", emoji=PE_FIVEM),
+        discord.SelectOption(label="D1scörd Bundle", value="D1scörd Bundle", emoji=PE_DISCORD)
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(options))
+    
+    desc = (
+        "💎 ⁠`Silent Products × Acounts Bundle`\n\n"
+        "Bundle **available** from us:\n"
+        "> • " + str(PE_FIVEM) + " x FiveM Bundle\n"
+        "> • " + str(PE_DISCORD) + " x D1scörd Bundle\n\n"
+        "📢 **Select** the product you are **interested** in.\n"
+        "📢 At the **bottom** of the `select menu`, select **duration** and **payment**.\n\n"
+        "🌐 **Instant Buy:** [Click here to visit our website](https://google.com)"
+    )
+    
+    embed = discord.Embed(title="", description=desc, color=discord.Color.blue())
+    embed.set_image(url=BUNDLE_BANNER)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_cheats", description="Panel FiveM Cheats")
+@app_commands.checks.has_permissions(administrator=True)
+async def scheats(inter: discord.Interaction):
+    options = [
+        discord.SelectOption(label="Keyser", value="Keyser", description="Keyser Cheat", emoji=PE_KEYSER),
+        discord.SelectOption(label="Echo.fun", value="Echo.fun", description="Echo.fun Cheat", emoji=PE_ECHO),
+        discord.SelectOption(label="Worm", value="Worm", description="Worm Cheat", emoji=PE_WORM)
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(options))
+    desc = "Cheats available from us:\n> • Keyser\n> • Echo.fun\n> • Worm\n\nSelect the cheat you are interested in."
+    embed = discord.Embed(title="Velox Products x FiveM Cheats", description=desc, color=discord.Color.blue())
+    embed.set_image(url=CHEAT_BANNER)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_cheatscs", description="Panel CS2 Cheats")
+@app_commands.checks.has_permissions(administrator=True)
+async def scheatscs(inter: discord.Interaction):
+    options = [
+        discord.SelectOption(label="Memesense", value="Memesense", description="Memesense Cheat", emoji=PE_MEMESENSE)
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(options))
+    
+    desc = (
+        "💎 ⁠`Silent Products × COUNTER STRIKE 2`\n\n"
+        "Cs 2 **available** from us:\n"
+        "> • " + str(PE_MEMESENSE) + " x Memesense\n\n"
+        "📢 **Select** the product you are **interested** in.\n"
+        "📢 At the **bottom** of the `select menu`, select **duration** and **payment**.\n\n"
+        "🌐 **Instant Buy:** [Click here to visit our website](https://google.com)"
+    )
+    
+    embed = discord.Embed(title="", description=desc, color=discord.Color.blue())
+    embed.set_image(url=CS_BANNER)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_spoofer", description="Panel FiveM Spoofer")
+@app_commands.checks.has_permissions(administrator=True)
+async def sspoof(inter: discord.Interaction):
+    options = [
+        discord.SelectOption(label="Red Engine", value="Red Engine", description="Red Engine Spoofer", emoji=PE_REDENGINE)
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(options))
+    desc = "Spoofers available from us:\n> • Red Engine\n\nSelect the product you are interested in."
+    embed = discord.Embed(title="Velox Products x FiveM Spoofer", description=desc, color=discord.Color.blue())
+    embed.set_image(url=SPOOFER_BANNER)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_legitchecks", description="Panel legit check")
+@app_commands.checks.has_permissions(administrator=True)
+async def sl(inter: discord.Interaction):
+    desc = "Jeżeli uważasz, że jesteśmy legit, zaznacz reakcję pod wiadomością."
+    embed = discord.Embed(title="CZY JESTESMY LEGIT?", description=desc, color=discord.Color.blue())
+    embed.set_image(url=LEGIT_BANNER)
+    await inter.response.send_message(embed=embed, view=LegitView())
+
+@bot.tree.command(name="say", description="Wysyła wiadomosc")
+@app_commands.checks.has_permissions(administrator=True)
+@app_commands.describe(message="Tresc wiadomosci")
+async def say(inter: discord.Interaction, message: str):
+    await inter.channel.send(message)
+    await inter.response.send_message("Wyslano wiadomosc!", ephemeral=True)
+
+@bot.tree.command(name="bandc", description="Banowanie uzytkownika")
+@app_commands.checks.has_permissions(ban_members=True)
+@app_commands.describe(user="Uzytkownik", reason="Powod")
+async def bandc(inter: discord.Interaction, user: discord.Member, reason: str = "Brak powodu"):
+    await inter.guild.ban(user, reason=reason)
+    await inter.response.send_message(f"Zbanowano użytkownika {user}.", ephemeral=True)
+
+@bot.tree.command(name="unban", description="Odbanowanie uzytkownika")
+@app_commands.checks.has_permissions(ban_members=True)
+@app_commands.describe(user_id="ID uzytkownika")
+async def unban(inter: discord.Interaction, user_id: str):
+    user = await bot.fetch_user(int(user_id))
+    await inter.guild.unban(user)
+    await inter.response.send_message(f"Odbanowano użytkownika `{user}`.", ephemeral=True)
+
+@bot.tree.command(name="feedback", description="Opinia")
+@app_commands.checks.has_permissions(administrator=True)
+async def fb(inter: discord.Interaction):
+    await inter.response.send_message("Dziekujemy za zakupy w Velox Shop!", ephemeral=True)
+
+@bot.tree.command(name="drop", description="Drop")
+async def dp(inter: discord.Interaction):
+    if inter.channel_id != DROP_CH:
+        await inter.response.send_message("Zly kanal!", ephemeral=True)
+        return
+    
+    if random.randint(1, 100) <= 5:
+        await inter.response.send_message(f"🎉 Gratulacje {inter.user.mention}, wygrałeś 10% zniżki w Velox Shop!")
+    else:
+        await inter.response.send_message(f"⚡ Niestety {inter.user.mention}, tym razem się nie udało. Spróbuj ponownie za jakiś czas.")
+
+bot.run(TOKEN)
