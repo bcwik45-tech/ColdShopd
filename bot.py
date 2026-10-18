@@ -11,7 +11,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 DROP_CH = 1561325772587925514       # Zaktualizowany kanał dropu
 WELCOME_CH = 1557150071177347152   
-VERIFY_ROLE_ID = 1456459830494630102  
+VERIFY_ROLE_ID = 1456459830494630102  # Rola weryfikacji
 
 # ID KATEGORII TICKETÓW
 CAT_OWNER = 1561333304131715112
@@ -65,7 +65,7 @@ async def on_member_join(member: discord.Member):
 
     await ch.send(embed=embed)
 
-# --- WIDOKI I SYSTEM TICKETÓW (BEZ GIFA, Z IKONKĄ W NAZWIE KANAŁU) ---
+# --- WIDOKI I SYSTEM TICKETÓW ---
 class CloseView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -140,7 +140,6 @@ class TicketView(discord.ui.View):
 
         category = guild.get_channel(category_id) if category_id else None
 
-        # Nazwa kanału z ikonką kategorii (np. 🛒-ticket-shop-nazwa)
         ch_name = f"{emoji}-ticket-{ticket_type.lower()}-{user.name.lower()}"
 
         ch = await guild.create_text_channel(
@@ -261,75 +260,28 @@ async def say(inter: discord.Interaction, message: str):
 @bot.tree.command(name="setup_legitchecks", description="Panel legit check z opcją oceniania")
 @app_commands.checks.has_permissions(administrator=True)
 async def sl(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
-    
     desc = (
         "📢 **Jeżeli uważasz, że jesteśmy legit, zaznacz reakcję ✅ pod tą wiadomością.**\n"
         "🔔 **Zaznaczenie reakcji 🔖 będzie skutkować otrzymaniem przerwy na okres 7 dni.**"
     )
-    
     embed = discord.Embed(title="🕵️ CZY JESTEŚMY LEGIT?", description=desc, color=discord.Color.blue())
     embed.set_image(url=BANNER)
-    await inter.channel.send(embed=embed, view=LegitView())
-    await inter.followup.send("Gotowe!", ephemeral=True)
+    await inter.response.send_message(embed=embed, view=LegitView())
 
 @bot.tree.command(name="setup_tickets", description="Panel systemowy ticketów")
 @app_commands.checks.has_permissions(administrator=True)
 async def setup_tickets(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
     desc = (
         "Want to place an order, need to contact the owner or staff for help?\n"
         "Click the appropriate button below to open a private channel with the administration.\n\n"
         "Please don't open the tickets without a proper reason."
     )
     embed = discord.Embed(title="🎟️ Tickets", description=desc, color=discord.Color.dark_embed())
-    await inter.channel.send(embed=embed, view=TicketView())
-    await inter.followup.send("Gotowe!", ephemeral=True)
-
-@bot.tree.command(name="bandc", description="Banowanie użytkownika z estetycznym panelem")
-@app_commands.checks.has_permissions(ban_members=True)
-@app_commands.describe(user="Użytkownik do zbanowania", reason="Powód bana")
-async def bandc(inter: discord.Interaction, user: discord.Member, reason: str = "Brak powodu"):
-    await inter.guild.ban(user, reason=reason)
-    desc = (
-        f"👤 **User**\n`{user}` (ID: `{user.id}`)\n\n"
-        f"🛡️ **Administrator**\n{inter.user.mention}\n\n"
-        f"📝 **Reason**\n`{reason}`"
-    )
-    embed = discord.Embed(title="🔨 User has been banned for life", description=desc, color=discord.Color.red())
-    embed.set_image(url=BANNER)
-    await inter.response.send_message(embed=embed)
-
-@bot.tree.command(name="unban", description="Odbanowanie użytkownika")
-@app_commands.checks.has_permissions(ban_members=True)
-@app_commands.describe(user_id="ID użytkownika do odbanowania")
-async def unban(inter: discord.Interaction, user_id: str):
-    user = await bot.fetch_user(int(user_id))
-    await inter.guild.unban(user)
-    await inter.response.send_message(f"✅ Pomyślnie odbanowano użytkownika `{user}`.", ephemeral=True)
-
-@bot.tree.command(name="setup_verify", description="Panel weryfikacji serwera")
-@app_commands.checks.has_permissions(administrator=True)
-async def setup_verify(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
-    desc = (
-        "Welcome to **Velox Shop**! ⚡\n\n"
-        "To gain access to the rest of the server and unlock all channels, "
-        "please verify your account by clicking the button below.\n\n"
-        "🔒 **Security Check:** Automated protection is active.\n"
-        "⚡ **Access:** Instant role assignment upon verification.\n\n"
-        "Click the button below to verify yourself."
-    )
-    embed = discord.Embed(title="Verification", description=desc, color=discord.Color.dark_embed())
-    embed.set_image(url=BANNER)
-    await inter.channel.send(embed=embed, view=VerifyView())
-    await inter.followup.send("Gotowe!", ephemeral=True)
+    await inter.response.send_message(embed=embed, view=TicketView())
 
 @bot.tree.command(name="setup_bundle", description="Panel Bundle & Accounts")
 @app_commands.checks.has_permissions(administrator=True)
 async def sb(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
-    
     e_fivem = discord.PartialEmoji(name="fivem", id=1561307556360749086)
     e_steam = discord.PartialEmoji(name="steam", id=1561307761617281165)
     e_dc = discord.PartialEmoji(name="discord", id=1561307671397929001)
@@ -365,13 +317,11 @@ async def sb(inter: discord.Interaction):
     
     embed = discord.Embed(title="💎 ✖️ Velox Products × PREMIUM", description=desc, color=discord.Color.blue())
     embed.set_image(url=BANNER)
-    await inter.channel.send(embed=embed, view=v)
-    await inter.followup.send("Gotowe!", ephemeral=True)
+    await inter.response.send_message(embed=embed, view=v)
 
 @bot.tree.command(name="setup_vpn", description="Panel VPN")
 @app_commands.checks.has_permissions(administrator=True)
 async def svpn(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
     e_ip = discord.PartialEmoji(name="ipvanish", id=1561307428643930152)
     e_nex = discord.PartialEmoji(name="nexhub", id=1561308489933127810)
 
@@ -394,26 +344,22 @@ async def svpn(inter: discord.Interaction):
     )
     embed = discord.Embed(title=f"IPVAN$SH {e_ip}", description=desc, color=discord.Color.blue())
     embed.set_image(url=BANNER)
-    await inter.channel.send(embed=embed, view=v)
-    await inter.followup.send("Gotowe!", ephemeral=True)
+    await inter.response.send_message(embed=embed, view=v)
 
 @bot.tree.command(name="setup_cs", description="Panel Counter-Strike 2")
 @app_commands.checks.has_permissions(administrator=True)
 async def scs(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
     e_cs = discord.PartialEmoji(name="csprime", id=1561307515067834428)
     options = [discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto CS2 ze statusem Prime", emoji=e_cs)]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
     embed = discord.Embed(title=f"🎯 VELOX SHOP × COUNTER-STRIKE 2 {e_cs}", description="Wybierz ofertę Prime z listy poniżej:", color=discord.Color.blue())
     embed.set_image(url=BANNER)
-    await inter.channel.send(embed=embed, view=v)
-    await inter.followup.send("Gotowe!", ephemeral=True)
+    await inter.response.send_message(embed=embed, view=v)
 
 @bot.tree.command(name="setup_shop", description="Sklep / Dodatki")
 @app_commands.checks.has_permissions(administrator=True)
 async def sshop(inter: discord.Interaction):
-    await inter.response.defer(ephemeral=True)
     options = [
         discord.SelectOption(label="Citizen", value="Citizen Custom", emoji="🌅"),
         discord.SelectOption(label="Soundpacks", value="Soundpacks", emoji="🔊")
@@ -422,8 +368,44 @@ async def sshop(inter: discord.Interaction):
     v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
     embed = discord.Embed(title="🛒 VELOX SHOP × ADDONS", description="Wybierz dodatek z listy poniżej:", color=discord.Color.blue())
     embed.set_image(url=BANNER)
-    await inter.channel.send(embed=embed, view=v)
-    await inter.followup.send("Gotowe!", ephemeral=True)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_verify", description="Panel weryfikacji serwera")
+@app_commands.checks.has_permissions(administrator=True)
+async def setup_verify(inter: discord.Interaction):
+    desc = (
+        "Welcome to **Velox Shop**! ⚡\n\n"
+        "To gain access to the rest of the server and unlock all channels, "
+        "please verify your account by clicking the button below.\n\n"
+        "🔒 **Security Check:** Automated protection is active.\n"
+        "⚡ **Access:** Instant role assignment upon verification.\n\n"
+        "Click the button below to verify yourself."
+    )
+    embed = discord.Embed(title="Verification", description=desc, color=discord.Color.dark_embed())
+    embed.set_image(url=BANNER)
+    await inter.response.send_message(embed=embed, view=VerifyView())
+
+@bot.tree.command(name="bandc", description="Banowanie użytkownika z estetycznym panelem")
+@app_commands.checks.has_permissions(ban_members=True)
+@app_commands.describe(user="Użytkownik do zbanowania", reason="Powód bana")
+async def bandc(inter: discord.Interaction, user: discord.Member, reason: str = "Brak powodu"):
+    await inter.guild.ban(user, reason=reason)
+    desc = (
+        f"👤 **User**\n`{user}` (ID: `{user.id}`)\n\n"
+        f"🛡️ **Administrator**\n{inter.user.mention}\n\n"
+        f"📝 **Reason**\n`{reason}`"
+    )
+    embed = discord.Embed(title="🔨 User has been banned for life", description=desc, color=discord.Color.red())
+    embed.set_image(url=BANNER)
+    await inter.response.send_message(embed=embed)
+
+@bot.tree.command(name="unban", description="Odbanowanie użytkownika")
+@app_commands.checks.has_permissions(ban_members=True)
+@app_commands.describe(user_id="ID użytkownika do odbanowania")
+async def unban(inter: discord.Interaction, user_id: str):
+    user = await bot.fetch_user(int(user_id))
+    await inter.guild.unban(user)
+    await inter.response.send_message(f"✅ Pomyślnie odbanowano użytkownika `{user}`.", ephemeral=True)
 
 @bot.tree.command(name="feedback", description="Opinia")
 @app_commands.checks.has_permissions(administrator=True)
