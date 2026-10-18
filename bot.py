@@ -151,7 +151,7 @@ class TicketView(discord.ui.View):
 
 class PurchaseSelect(discord.ui.Select):
     def __init__(self, options: list):
-        super().__init__(placeholder="Zakup Produkt", min_values=1, max_values=1, options=options)
+        super().__init__(placeholder="Zakup Produkt | Purchase Product", min_values=1, max_values=1, options=options)
 
     async def callback(self, inter: discord.Interaction):
         await inter.response.defer(ephemeral=True)
@@ -178,7 +178,6 @@ class ShopSelect(discord.ui.Select):
         super().__init__(placeholder="Kliknij aby wybrac", min_values=1, max_values=1, options=options)
 
     async def callback(self, inter: discord.Interaction):
-        await inter.response.defer(ephemeral=True)
         product_name = self.values[0]
 
         if product_name == "Red Engine":
@@ -202,7 +201,7 @@ class ShopSelect(discord.ui.Select):
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
         elif product_name == "Keyser":
             desc = (
@@ -229,7 +228,7 @@ class ShopSelect(discord.ui.Select):
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
         elif product_name == "Echo.fun":
             desc = (
@@ -254,7 +253,7 @@ class ShopSelect(discord.ui.Select):
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
         elif product_name == "Worm":
             desc = (
@@ -281,7 +280,7 @@ class ShopSelect(discord.ui.Select):
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
         elif product_name == "Memesense":
             desc = (
@@ -308,7 +307,129 @@ class ShopSelect(discord.ui.Select):
             ]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        elif product_name == "FiveM Ready":
+            desc = (
+                "» **Ceny:**\n"
+                f"> {PE_FIVEM} x1 - €0.12 / 0.50zł\n"
+                f"> {PE_FIVEM} x5 +1 Gratis - €0.59 / 2.50zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Full Acces\n"
+                "> ✅ » Gotowy do użycia\n"
+                "> ✅ » Nie ma banów\n"
+                "> ✅ » 100% Fresh"
+            )
+            embed = discord.Embed(title=f"FIVEM READY {PE_FIVEM}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=BANNER)
+            p_options = [
+                discord.SelectOption(label="FiveM Ready x1 - €0.12 / 0.50 zł", value="FiveM Ready x1", emoji=PE_FIVEM),
+                discord.SelectOption(label="FiveM Ready x5+1 - €0.59 / 2.50 zł", value="FiveM Ready x5+1", emoji=PE_FIVEM)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        elif product_name == "Steam":
+            desc = (
+                "» **Ceny:**\n"
+                f"> {PE_STEAM} x1 - €0.04 / 0.15zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Full Acces\n"
+                "> ✅ » Gotowy do użycia\n"
+                "> ✅ » Nie ma banów"
+            )
+            embed = discord.Embed(title=f"STE$M {PE_STEAM}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=BANNER)
+            p_options = [
+                discord.SelectOption(label="Steam x1 - €0.04 / 0.15 zł", value="Steam x1", emoji=PE_STEAM)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        elif product_name == "D1scörd":
+            desc = (
+                "» **Ceny:**\n"
+                f"> {PE_DISCORD} Acc Email + Phone Verifi3d (For Sp00fing) - €0.2 / 0.90zł\n"
+                f"> {PE_DISCORD} TOken Email + Phone Verifi3d (YEAR AG3D) - €0.13 / 0.55zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Full Acces\n"
+                "> ✅ » Gotowy do użycia\n"
+                "> ✅ » Nie ma banów"
+            )
+            embed = discord.Embed(title=f"DISC$RD {PE_DISCORD}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=BANNER)
+            p_options = [
+                discord.SelectOption(label="Acc Verified - €0.2 / 0.90zł", value="Discord Acc", emoji=PE_DISCORD),
+                discord.SelectOption(label="Token Aged - €0.13 / 0.55zł", value="Discord Token", emoji=PE_DISCORD)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        elif product_name == "CS2 Prime Accounts":
+            desc = (
+                "» **Ceny:**\n"
+                f"> {PE_CS} Prime Ready - €1.4 / 6zł\n"
+                f"> {PE_CS} Premier Ready (4+ Medals) - €1.85 / 8zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Każde konto ma Prime\n"
+                "> ✅ » Gotowe do użycia\n"
+                "> ✅ » Bez Vac'a\n"
+                "> ✅ » Gwarancja 3 godziny"
+            )
+            embed = discord.Embed(title=f"CS2 PRIME ACCOUNT {PE_CS}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=CS_BANNER)
+            p_options = [
+                discord.SelectOption(label="Prime Ready - €1.4 / 6 zł", value="CS2 Prime Ready", emoji=PE_CS),
+                discord.SelectOption(label="Premier Ready (4+ Medals) - €1.85 / 8 zł", value="CS2 Premier Ready", emoji=PE_CS)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        elif product_name == "NexHub":
+            desc = (
+                "» **Ceny:**\n"
+                f"> {PE_NEXHUB} 1 Day - €1.7 / 7.5zł\n"
+                f"> {PE_NEXHUB} 7 Days - €4.3 / 18.5zł\n"
+                f"> {PE_NEXHUB} Month - €8.6 / 37zł\n"
+                f"> {PE_NEXHUB} 3 Months - €17.3 / 74.5zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Działa na ShootGG & Clowns.Cool\n"
+                "> ✅ » 100+ Kraji\n"
+                "> ✅ » Gotowy do użycia\n"
+                "> ✅ » Optymalny i szybki"
+            )
+            embed = discord.Embed(title=f"NEXHUB VPN {PE_NEXHUB}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=BANNER)
+            p_options = [
+                discord.SelectOption(label="Nexhub - €1.7 / 7.5 zł", value="Nexhub 1 Day", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €4.3 / 18.5 zł", value="Nexhub 7 Days", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €8.6 / 37 zł", value="Nexhub Month", emoji=PE_NEXHUB),
+                discord.SelectOption(label="Nexhub - €17.3 / 74.5 zł", value="Nexhub 3 Months", emoji=PE_NEXHUB)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
+
+        elif product_name == "IP Vanish":
+            desc = (
+                "» **Ceny:**\n"
+                f"> {PE_IPVANISH} Year - €1 / 4.5zł\n\n"
+                "» **Krótki Opis:**\n"
+                "> ✅ » Full Acces\n"
+                "> ✅ » Gotowy do użycia"
+            )
+            embed = discord.Embed(title=f"IPVAN$SH {PE_IPVANISH}", description=desc, color=discord.Color.blue())
+            embed.set_image(url=BANNER)
+            p_options = [
+                discord.SelectOption(label="IP Vanish - €1 / 4.5 zł", value="IP Vanish Year", emoji=PE_IPVANISH)
+            ]
+            v = discord.ui.View(timeout=None)
+            v.add_item(PurchaseSelect(p_options))
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
         else:
             embed = discord.Embed(title=f"Produkt: {product_name}", description="Wybierz opcję poniżej:", color=discord.Color.blue())
@@ -316,7 +437,7 @@ class ShopSelect(discord.ui.Select):
             p_options = [discord.SelectOption(label=f"Kup {product_name}", value=product_name)]
             v = discord.ui.View(timeout=None)
             v.add_item(PurchaseSelect(p_options))
-            await inter.followup.send(embed=embed, view=v)
+            await inter.response.send_message(embed=embed, view=v, ephemeral=True)
 
 class VerifyView(discord.ui.View):
     def __init__(self):
@@ -352,11 +473,27 @@ class LegitView(discord.ui.View):
         await inter.response.edit_message(view=self)
         await inter.followup.send("Dzieki za glos!", ephemeral=True)
 
+class TicketSetupView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(label="Shop", style=discord.ButtonStyle.success, custom_id="t_shop_main")
+    async def shop_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await TicketView().create_ticket(inter, "Shop")
+
+    @discord.ui.button(label="Owner", style=discord.ButtonStyle.secondary, custom_id="t_owner_main")
+    async def owner_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await TicketView().create_ticket(inter, "Owner")
+
+    @discord.ui.button(label="Support", style=discord.ButtonStyle.primary, custom_id="t_support_main")
+    async def support_btn(self, inter: discord.Interaction, btn: discord.ui.Button):
+        await TicketView().create_ticket(inter, "Support")
+
 @bot.tree.command(name="setup_tickets", description="Panel ticketow")
 @app_commands.checks.has_permissions(administrator=True)
 async def setup_tickets(inter: discord.Interaction):
     embed = discord.Embed(title="Tickets", description="Kliknij przycisk poniżej, aby otworzyć ticket.", color=discord.Color.dark_embed())
-    await inter.response.send_message(embed=embed, view=TicketView())
+    await inter.response.send_message(embed=embed, view=TicketSetupView())
 
 @bot.tree.command(name="setup_verify", description="Panel weryfikacji")
 @app_commands.checks.has_permissions(administrator=True)
@@ -381,8 +518,7 @@ async def sb(inter: discord.Interaction):
         discord.SelectOption(label="D1scörd", value="D1scörd", emoji=PE_DISCORD),
         discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", emoji=PE_CS),
         discord.SelectOption(label="IP Vanish", value="IP Vanish", emoji=PE_IPVANISH),
-        discord.SelectOption(label="NexHub", value="NexHub", emoji=PE_NEXHUB),
-        discord.SelectOption(label="Windscribe", value="Windscribe", emoji="🌐")
+        discord.SelectOption(label="NexHub", value="NexHub", emoji=PE_NEXHUB)
     ]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(options))
@@ -390,14 +526,13 @@ async def sb(inter: discord.Interaction):
     desc = (
         "💎 ⁠`Silent Products × PREMIUM`\n\n"
         "Accounts **available** from us:\n"
-        "> • " + str(PE_FIVEM) + " x FiveM Ready\n"
-        "> • " + str(PE_STEAM) + " x Steam\n"
-        "> • " + str(PE_DISCORD) + " x D1scörd\n"
-        "> • " + str(PE_CS) + " x CS2 Prime Accounts\n\n"
+        f"> • {PE_FIVEM} x FiveM Ready\n"
+        f"> • {PE_STEAM} x Steam\n"
+        f"> • {PE_DISCORD} x D1scörd\n"
+        f"> • {PE_CS} x CS2 Prime Accounts\n\n"
         "VPN's **available** from us:\n"
-        "> • " + str(PE_IPVANISH) + " x IP Vanish\n"
-        "> • " + str(PE_NEXHUB) + " x NexHub\n"
-        "> • 🌐 x Windscribe\n\n"
+        f"> • {PE_IPVANISH} x IP Vanish\n"
+        f"> • {PE_NEXHUB} x NexHub\n\n"
         "📢 **Select** the product you are **interested** in.\n"
         "📢 At the **bottom** of the `select menu`, select **duration** and **payment**.\n\n"
         "🌐 **Instant Buy:** [Click here to visit our website](https://google.com)"
@@ -420,8 +555,8 @@ async def sb2(inter: discord.Interaction):
     desc = (
         "💎 ⁠`Silent Products × Acounts Bundle`\n\n"
         "Bundle **available** from us:\n"
-        "> • " + str(PE_FIVEM) + " x FiveM Bundle\n"
-        "> • " + str(PE_DISCORD) + " x D1scörd Bundle\n\n"
+        f"> • {PE_FIVEM} x FiveM Bundle\n"
+        f"> • {PE_DISCORD} x D1scörd Bundle\n\n"
         "📢 **Select** the product you are **interested** in.\n"
         "📢 At the **bottom** of the `select menu`, select **duration** and **payment**.\n\n"
         "🌐 **Instant Buy:** [Click here to visit our website](https://google.com)"
@@ -441,7 +576,13 @@ async def scheats(inter: discord.Interaction):
     ]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(options))
-    desc = "Cheats available from us:\n> • Keyser\n> • Echo.fun\n> • Worm\n\nSelect the cheat you are interested in."
+    desc = (
+        "Cheats available from us:\n"
+        f"> • {PE_KEYSER} Keyser\n"
+        f"> • {PE_ECHO} Echo.fun\n"
+        f"> • {PE_WORM} Worm\n\n"
+        "Select the cheat you are interested in."
+    )
     embed = discord.Embed(title="Velox Products x FiveM Cheats", description=desc, color=discord.Color.blue())
     embed.set_image(url=CHEAT_BANNER)
     await inter.response.send_message(embed=embed, view=v)
@@ -458,7 +599,29 @@ async def scheatscs(inter: discord.Interaction):
     desc = (
         "💎 ⁠`Silent Products × COUNTER STRIKE 2`\n\n"
         "Cs 2 **available** from us:\n"
-        "> • " + str(PE_MEMESENSE) + " x Memesense\n\n"
+        f"> • {PE_MEMESENSE} x Memesense\n\n"
+        "📢 **Select** the product you are **interested** in.\n"
+        "📢 At the **bottom** of the `select menu`, select **duration** and **payment**.\n\n"
+        "🌐 **Instant Buy:** [Click here to visit our website](https://google.com)"
+    )
+    
+    embed = discord.Embed(title="", description=desc, color=discord.Color.blue())
+    embed.set_image(url=CS_BANNER)
+    await inter.response.send_message(embed=embed, view=v)
+
+@bot.tree.command(name="setup_cheats1", description="Panel CS2 Cheats 1")
+@app_commands.checks.has_permissions(administrator=True)
+async def scheats1(inter: discord.Interaction):
+    options = [
+        discord.SelectOption(label="Memesense", value="Memesense", description="Memesense Cheat", emoji=PE_MEMESENSE)
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(options))
+    
+    desc = (
+        "💎 ⁠`Silent Products × COUNTER STRIKE 2`\n\n"
+        "Cs 2 **available** from us:\n"
+        f"> • {PE_MEMESENSE} x Memesense\n\n"
         "📢 **Select** the product you are **interested** in.\n"
         "📢 At the **bottom** of the `select menu`, select **duration** and **payment**.\n\n"
         "🌐 **Instant Buy:** [Click here to visit our website](https://google.com)"
@@ -476,7 +639,11 @@ async def sspoof(inter: discord.Interaction):
     ]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(options))
-    desc = "Spoofers available from us:\n> • Red Engine\n\nSelect the product you are interested in."
+    desc = (
+        "Spoofers available from us:\n"
+        f"> • {PE_REDENGINE} Red Engine\n\n"
+        "Select the product you are interested in."
+    )
     embed = discord.Embed(title="Velox Products x FiveM Spoofer", description=desc, color=discord.Color.blue())
     embed.set_image(url=SPOOFER_BANNER)
     await inter.response.send_message(embed=embed, view=v)
