@@ -238,36 +238,3 @@ async def scheats(inter: discord.Interaction):
     embed = discord.Embed(title="Velox Products x FiveM Cheats", description="Wybierz cheat z listy poniżej:", color=discord.Color.blue())
     embed.set_image(url=CHEAT_BANNER)
     await inter.response.send_message(embed=embed, view=v)
-
-@bot.tree.command(name="setup_spoofer", description="Panel FiveM Spoofer")
-@app_commands.checks.has_permissions(administrator=True)
-async def sspoof(inter: discord.Interaction):
-    options = [discord.SelectOption(label="Echo.fun", value="Echo.fun")]
-    v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(options))
-    embed = discord.Embed(title="Velox Products x FiveM Spoofer", description="Wybierz spoofer z listy poniżej:", color=discord.Color.blue())
-    embed.set_image(url=SPOOFER_BANNER)
-    await inter.response.send_message(embed=embed, view=v)
-
-@bot.tree.command(name="setup_vpn", description="Panel VPN")
-@app_commands.checks.has_permissions(administrator=True)
-async def svpn(inter: discord.Interaction):
-    options = [
-        discord.SelectOption(label="IP Vanish", value="IP Vanish"),
-        discord.SelectOption(label="NexHub", value="NexHub")
-    ]
-    v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(options))
-    embed = discord.Embed(title="VPN Panel", description="Wybierz VPN z listy poniżej:", color=discord.Color.blue())
-    embed.set_image(url=BANNER)
-    await inter.response.send_message(embed=embed, view=v)
-
-@bot.tree.command(name="setup_legitchecks", description="Panel legit check")
-@app_commands.checks.has_permissions(administrator=True)
-async def sl(inter: discord.Interaction):
-    embed = discord.Embed(title="CZY JESTESMY LEGIT?", description="Zaznacz reakcję pod wiadomością.", color=discord.Color.blue())
-    embed.set_image(url=BANNER)
-    await inter.response.send_message(embed=embed, view=LegitView())
-
-@bot.tree.command(name="say", description="Wysyła wiadomosc")
-@
