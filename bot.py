@@ -32,11 +32,7 @@ class CloseView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(
-        label="🔒 Zamknij",
-        style=discord.ButtonStyle.danger,
-        custom_id="close_t"
-    )
+    @discord.ui.button(label="🔒 Zamknij", style=discord.ButtonStyle.danger, custom_id="close_t")
     async def close(self, it: discord.Interaction, btn: discord.ui.Button):
         await it.response.send_message("Usuwanie ticketa za 3s...", ephemeral=True)
         await asyncio.sleep(3)
@@ -57,11 +53,7 @@ class ShopSelect(discord.ui.Select):
                 it.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
             }
         )
-        emb = discord.Embed(
-            title=f"COLDSHOP Ticket: {item}",
-            description=f"Witaj {it.user.mention}!\nTicket dla: **{item}**.",
-            color=discord.Color.blue()
-        )
+        emb = discord.Embed(title=f"COLDSHOP Ticket: {item}", description=f"Witaj {it.user.mention}!\nTicket dla: **{item}**.", color=discord.Color.blue())
         await ch.send(content=f"{it.user.mention}", embed=emb, view=CloseView())
         await it.followup.send(f"✅ Stworzono ticket: {ch.mention}", ephemeral=True)
 
@@ -70,24 +62,14 @@ class LegitView(discord.ui.View):
         super().__init__(timeout=None)
         self.y, self.n = 0, 0
 
-    @discord.ui.button(
-        label="0",
-        emoji="✅",
-        style=discord.ButtonStyle.success,
-        custom_id="leg_y"
-    )
+    @discord.ui.button(label="0", emoji="✅", style=discord.ButtonStyle.success, custom_id="leg_y")
     async def yes(self, it: discord.Interaction, btn: discord.ui.Button):
         self.y += 1
         btn.label = str(self.y)
         await it.response.edit_message(view=self)
         await it.followup.send("Dzięki za głos!", ephemeral=True)
 
-    @discord.ui.button(
-        label="0",
-        emoji="❌",
-        style=discord.ButtonStyle.danger,
-        custom_id="leg_n"
-    )
+    @discord.ui.button(label="0", emoji="❌", style=discord.ButtonStyle.danger, custom_id="leg_n")
     async def no(self, it: discord.Interaction, btn: discord.ui.Button):
         self.n += 1
         btn.label = str(self.n)
@@ -98,11 +80,7 @@ class LegitView(discord.ui.View):
 @app_commands.checks.has_permissions(administrator=True)
 async def sl(it: discord.Interaction):
     await it.response.defer(ephemeral=True)
-    emb = discord.Embed(
-        title="⭐ COLDSHOP × LEGIT CHECK",
-        description="Kliknij ✅ lub ❌",
-        color=discord.Color.blue()
-    )
+    emb = discord.Embed(title="⭐ COLDSHOP × LEGIT CHECK", description="Kliknij ✅ lub ❌", color=discord.Color.blue())
     emb.set_image(url=BANNER)
     await it.channel.send(embed=emb, view=LegitView())
     await it.followup.send("Gotowe!", ephemeral=True)
@@ -111,29 +89,15 @@ async def sl(it: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def sb(it: discord.Interaction):
     await it.response.defer(ephemeral=True)
-    e_steam = discord.PartialEmoji(name="steam", id=1561307761617281165)
-    e_dc = discord.PartialEmoji(name="discord", id=1561307671397929001)
-    e_rock = discord.PartialEmoji(name="rockstar", id=1561308861636542524)
-    e_fivem = discord.PartialEmoji(name="fivem", id=1561307556360749086)
-
     opts = [
-        discord.SelectOption(label="Steam Account", value="Steam Account", emoji=e_steam),
-        discord.SelectOption(label="Discord Account", value="Discord Account", emoji=e_dc),
-        discord.SelectOption(label="Rockstar Account", value="Rockstar Account", emoji=e_rock),
-        discord.SelectOption(
-            label="FiveM Bundle",
-            value="FiveM Bundle",
-            description="Discord + Steam + Rockstar",
-            emoji=e_fivem
-        )
+        discord.SelectOption(label="Steam Account", value="Steam Account", emoji="🎮"),
+        discord.SelectOption(label="Discord Account", value="Discord Account", emoji="💬"),
+        discord.SelectOption(label="Rockstar Account", value="Rockstar Account", emoji="⭐"),
+        discord.SelectOption(label="FiveM Bundle", value="FiveM Bundle", description="Discord + Steam + Rockstar", emoji="📦")
     ]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect("Wybierz konto / pakiet", opts))
-    emb = discord.Embed(
-        title="📦 COLDSHOP × BUNDLE",
-        description="Wybierz konto lub pakiet z listy:",
-        color=discord.Color.blue()
-    )
+    emb = discord.Embed(title="📦 COLDSHOP × BUNDLE", description="Wybierz konto lub pakiet z listy:", color=discord.Color.blue())
     emb.set_image(url=BANNER)
     await it.channel.send(embed=emb, view=v)
     await it.followup.send("Gotowe!", ephemeral=True)
@@ -142,4 +106,57 @@ async def sb(it: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def svpn(it: discord.Interaction):
     await it.response.defer(ephemeral=True)
-    e_ip = discord.PartialEmoji(name="ipvanish", id=1561307428
+    opts = [
+        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", emoji="🛡️"),
+        discord.SelectOption(label="NexHub", value="NexHub VPN", emoji="🌐")
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect("Wybierz usługę VPN", opts))
+    emb = discord.Embed(title="🛡️ COLDSHOP × VPN", description="Wybierz dostawcę VPN z listy:", color=discord.Color.blue())
+    emb.set_image(url=BANNER)
+    await it.channel.send(embed=emb, view=v)
+    await it.followup.send("Gotowe!", ephemeral=True)
+
+@bot.tree.command(name="setup_cs", description="Panel CS2")
+@app_commands.checks.has_permissions(administrator=True)
+async def scs(it: discord.Interaction):
+    await it.response.defer(ephemeral=True)
+    opts = [discord.SelectOption(label="Account Prime", value="CS2 Account Prime", emoji="🎯")]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect("Wybierz ofertę CS2", opts))
+    emb = discord.Embed(title="🎯 COLDSHOP × COUNTER-STRIKE 2", description="Wybierz ofertę z listy:", color=discord.Color.blue())
+    emb.set_image(url=BANNER)
+    await it.channel.send(embed=emb, view=v)
+    await it.followup.send("Gotowe!", ephemeral=True)
+
+@bot.tree.command(name="setup_shop", description="Sklep")
+@app_commands.checks.has_permissions(administrator=True)
+async def sshop(it: discord.Interaction):
+    await it.response.defer(ephemeral=True)
+    opts = [
+        discord.SelectOption(label="Citizen", value="Citizen Custom", emoji="🌅"),
+        discord.SelectOption(label="Soundpacks", value="Soundpacks", emoji="🔊")
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect("Wybierz dodatek", opts))
+    emb = discord.Embed(title="🛒 COLDSHOP × ADDONS", description="Wybierz dodatek z listy:", color=discord.Color.blue())
+    emb.set_image(url=BANNER)
+    await it.channel.send(embed=emb, view=v)
+    await it.followup.send("Gotowe!", ephemeral=True)
+
+@bot.tree.command(name="feedback", description="Opinia")
+@app_commands.checks.has_permissions(administrator=True)
+async def fb(it: discord.Interaction):
+    await it.response.send_message("⭐ Dziękujemy za zakupy w COLDSHOP!", ephemeral=True)
+
+@bot.tree.command(name="drop", description="Drop")
+async def dp(it: discord.Interaction):
+    if it.channel_id != DROP_CH:
+        await it.response.send_message("❌ Zły kanał!", ephemeral=True)
+        return
+    if random.randint(1, 100) <= 5:
+        await it.response.send_message(f"🎉 {it.user.mention} wygrał 20% zniżki!")
+    else:
+        await it.response.send_message(f"❄️ Niestety {it.user.mention}, spróbuj ponownie.")
+
+bot.run(TOKEN)
