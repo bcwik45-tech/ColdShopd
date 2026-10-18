@@ -11,26 +11,30 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 DROP_CH = 1557163203740438628       
 WELCOME_CH = 1557150071177347152   
-VERIFY_ROLE_ID = 0                 
+VERIFY_ROLE_ID = 1456459830494630102  # Rola weryfikacji
+
+# ID KATEGORII TICKETÓW
+CAT_OWNER = 1561333304131715112
+CAT_SUPPORT = 1539002224007712911
+
 BANNER = "http://googleusercontent.com/generated_animated_image/15959043500870823950"
 
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-class ColdShopBot(commands.Bot):
+class VeloxShopBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix="!", intents=intents)
 
     async def setup_hook(self):
-        # Synchronizacja globalna (bezpieczna, bez błędów 403 na gildię)
         try:
             await self.tree.sync()
-            print("✅ [COLDSHOP] Komendy zsynchronizowane globalnie!")
+            print("✅ [VELOX SHOP] Komendy zsynchronizowane globalnie!")
         except Exception as e:
             print(f"⚠️ Błąd synchronizacji komend: {e}")
 
-bot = ColdShopBot()
+bot = VeloxShopBot()
 
 # --- AUTOMATYCZNE POWITANIA ---
 @bot.event
@@ -45,7 +49,7 @@ async def on_member_join(member: discord.Member):
 
     desc = (
         f"🎉 Hi {member.mention}\n"
-        "Welcome to the best cfg in Poland!\n"
+        "Welcome to **Velox Shop**!\n"
         "Go check out our stuff!\n\n"
         f"**You're our {member_count} member!**\n\n"
         "**Member Info:**\n"
@@ -61,7 +65,7 @@ async def on_member_join(member: discord.Member):
 
     await ch.send(embed=embed)
 
-# --- WIDOKI I TICKET SYSTEM ---
+# --- WIDOKI I SYSTEM TICKETÓW Z KATEGORIAMI I ROLAMI ---
 class CloseView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -78,20 +82,79 @@ class TicketView(discord.ui.View):
 
     async def create_ticket(self, inter: discord.Interaction, ticket_type: str):
         await inter.response.defer(ephemeral=True)
-        ch = await inter.guild.create_text_channel(
-            name=f"ticket-{ticket_type.lower()}-{inter.user.name.lower()}",
-            overwrites={
-                inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
-                inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
-                inter.guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
-            }
+        guild = inter.guild
+        user = inter.user
+
+        # Konfiguracja uprawnień i kategorii w zależności od typu ticketa
+        roles_to_ping = []
+        category_id = None
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
+            guild.me: discord.PermissionOverwrite(read_messages=True, send_messages=True)
+        }
+
+        if ticket_type == "Owner":
+            category_id = CAT_OWNER
+            role_ids = [1456459709405204542, 1531428039676792903]
+            for r_id in role_ids:
+                role = guild.get_role(r_id)
+                if role:
+                    overwrites[role] = discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    roles_to_ping.append(role.mention)
+        
+        elif ticket_type == "Support":
+            category_id = CAT_SUPPORT
+            role_ids = [1555007565405094030, 1523678008869650575, 1555614403540295750, 1531428039676792903, 1456459709405204542]
+            for r_id in role_ids:
+                role = guild.get_role(r_id)
+                if role:
+                    overwrites[role] = discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    roles_to_ping.append(role.mention)
+
+        elif ticket_type == "Partnership":
+            category_id = CAT_OWNER
+            role_ids = [1456459709405204542, 1531428039676792903]
+            for r_id in role_ids:
+                role = guild.get_role(r_id)
+                if role:
+                    overwrites[role] = discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    roles_to_ping.append(role.mention)
+
+        elif ticket_type == "Shop":
+            category_id = CAT_SUPPORT
+            role_ids = [1456459709405204542]
+            for r_id in role_ids:
+                role = guild.get_role(r_id)
+                if role:
+                    overwrites[role] = discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    roles_to_ping.append(role.mention)
+
+        elif ticket_type == "Recruitment":
+            category_id = CAT_SUPPORT
+            role_ids = [1456459709405204542, 1531428039676792903]
+            for r_id in role_ids:
+                role = guild.get_role(r_id)
+                if role:
+                    overwrites[role] = discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                    roles_to_ping.append(role.mention)
+
+        category = guild.get_channel(category_id) if category_id else None
+
+        ch = await guild.create_text_channel(
+            name=f"ticket-{ticket_type.lower()}-{user.name.lower()}",
+            category=category,
+            overwrites=overwrites
         )
+
         embed = discord.Embed(
-            title=f"🎟️ Ticket: {ticket_type}",
-            description=f"Witaj {inter.user.mention}!\nOtworzyłeś ticket typu: **{ticket_type}**.",
+            title=f"🎟️ Velox Shop Ticket: {ticket_type}",
+            description=f"Witaj {user.mention}!\nOtworzyłeś ticket typu: **{ticket_type}**.",
             color=discord.Color.blue()
         )
-        await ch.send(content=f"{inter.user.mention}", embed=embed, view=CloseView())
+        
+        ping_content = f"{user.mention} " + " ".join(roles_to_ping)
+        await ch.send(content=ping_content, embed=embed, view=CloseView())
         await inter.followup.send(f"✅ Stworzono ticket: {ch.mention}", ephemeral=True)
 
     @discord.ui.button(label="Shop", emoji="🛒", style=discord.ButtonStyle.success, custom_id="t_shop")
@@ -136,8 +199,10 @@ class ShopSelect(discord.ui.Select):
     async def callback(self, inter: discord.Interaction):
         await inter.response.defer(ephemeral=True)
         product_name = self.values[0]
+        category = inter.guild.get_channel(CAT_SUPPORT)
         ch = await inter.guild.create_text_channel(
             name=f"ticket-{inter.user.name.lower()}",
+            category=category,
             overwrites={
                 inter.guild.default_role: discord.PermissionOverwrite(read_messages=False),
                 inter.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
@@ -145,11 +210,13 @@ class ShopSelect(discord.ui.Select):
             }
         )
         embed = discord.Embed(
-            title=f"💎 COLDSHOP Ticket: {product_name}",
+            title=f"💎 Velox Shop Ticket: {product_name}",
             description=f"Witaj {inter.user.mention}!\nOtworzyłeś ticket zakupowy dla: **{product_name}**.",
             color=discord.Color.blue()
         )
-        await ch.send(content=f"{inter.user.mention}", embed=embed, view=CloseView())
+        role_shop = inter.guild.get_role(1456459709405204542)
+        ping = role_shop.mention if role_shop else ""
+        await ch.send(content=f"{inter.user.mention} {ping}", embed=embed, view=CloseView())
         await inter.followup.send(f"✅ Stworzono ticket: {ch.mention}", ephemeral=True)
 
 class LegitView(discord.ui.View):
@@ -213,7 +280,7 @@ async def unban(inter: discord.Interaction, user_id: str):
 async def setup_verify(inter: discord.Interaction):
     await inter.response.defer(ephemeral=True)
     desc = (
-        "Welcome to **COLDCFG**! 🧊\n\n"
+        "Welcome to **Velox Shop**! ⚡\n\n"
         "To gain access to the rest of the server and unlock all channels, "
         "please verify your account by clicking the button below.\n\n"
         "🔒 **Security Check:** Automated protection is active.\n"
@@ -229,7 +296,7 @@ async def setup_verify(inter: discord.Interaction):
 @app_commands.checks.has_permissions(administrator=True)
 async def sl(inter: discord.Interaction):
     await inter.response.defer(ephemeral=True)
-    embed = discord.Embed(title="⭐ COLDSHOP × LEGIT CHECK", description="Kliknij ✅ lub ❌", color=discord.Color.blue())
+    embed = discord.Embed(title="⭐ VELOX SHOP × LEGIT CHECK", description="Kliknij ✅ lub ❌", color=discord.Color.blue())
     embed.set_image(url=BANNER)
     await inter.channel.send(embed=embed, view=LegitView())
     await inter.followup.send("Gotowe!", ephemeral=True)
@@ -248,4 +315,105 @@ async def sb(inter: discord.Interaction):
 
     options = [
         discord.SelectOption(label="FiveM Ready", value="FiveM Ready", description="See the price and open a ticket FiveM Ready.", emoji=e_fivem),
-        discord.SelectOption(label="Steam
+        discord.SelectOption(label="Steam", value="Steam", description="See the price and open a ticket Steam.", emoji=e_steam),
+        discord.SelectOption(label="D1scörd", value="D1scörd", description="See the price and open a ticket D1scörd.", emoji=e_dc),
+        discord.SelectOption(label="CS2 Prime Accounts", value="CS2 Prime Accounts", description="See the price and open a ticket CS2 Prime Accounts.", emoji=e_cs),
+        discord.SelectOption(label="IP Vanish", value="IP Vanish", description="See the price and open a ticket IP Vanish.", emoji=e_ip),
+        discord.SelectOption(label="NexHub", value="NexHub", description="See the price and open a ticket NexHub.", emoji=e_nex)
+    ]
+    
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(placeholder="❌ × Click to select | Kliknij aby wybrać", options=options))
+    
+    desc = (
+        "Accounts **available** from us:\n"
+        f"> • {e_fivem} **FiveM Ready**\n"
+        f"> • {e_steam} **Steam**\n"
+        f"> • {e_dc} **D1scörd**\n"
+        f"> • {e_cs} **CS2 Prime Accounts**\n\n"
+        "VPN's **available** from us:\n"
+        f"> • {e_ip} **IP Vanish**\n"
+        f"> • {e_nex} **NexHub**\n\n"
+        "🔊 Select the product you are **interested** in.\n"
+        "🔊 At the **bottom** of the select menu, select duration and payment.\n\n"
+        "🌐 **Instant Buy:** **Click here to visit our website**"
+    )
+    
+    embed = discord.Embed(title="💎 ✖️ Velox Products × PREMIUM", description=desc, color=discord.Color.blue())
+    embed.set_image(url=BANNER)
+    await inter.channel.send(embed=embed, view=v)
+    await inter.followup.send("Gotowe!", ephemeral=True)
+
+@bot.tree.command(name="setup_vpn", description="Panel VPN")
+@app_commands.checks.has_permissions(administrator=True)
+async def svpn(inter: discord.Interaction):
+    await inter.response.defer(ephemeral=True)
+    e_ip = discord.PartialEmoji(name="ipvanish", id=1561307428643930152)
+    e_nex = discord.PartialEmoji(name="nexhub", id=1561308489933127810)
+
+    options = [
+        discord.SelectOption(label="IP Vanish", value="IP Vanish VPN", description="Year - €1 / 4.5 zł", emoji=e_ip),
+        discord.SelectOption(label="NexHub", value="NexHub VPN", description="See the price and open a ticket NexHub.", emoji=e_nex)
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
+    
+    desc = (
+        "VPN's **available** from us:\n"
+        f"> {e_ip} **IP Vanish**\n"
+        f"> {e_nex} **NexHub**\n\n"
+        "» **Ceny:**\n"
+        f"> {e_ip} Year ✖️ **€1 / 4.5 zł**\n\n"
+        "» **Krótki Opis:**\n"
+        "> ✅ » Full Acces\n"
+        "> ✅ » Gotowy do użycia"
+    )
+    embed = discord.Embed(title=f"IPVAN$SH {e_ip}", description=desc, color=discord.Color.blue())
+    embed.set_image(url=BANNER)
+    await inter.channel.send(embed=embed, view=v)
+    await inter.followup.send("Gotowe!", ephemeral=True)
+
+@bot.tree.command(name="setup_cs", description="Panel Counter-Strike 2")
+@app_commands.checks.has_permissions(administrator=True)
+async def scs(inter: discord.Interaction):
+    await inter.response.defer(ephemeral=True)
+    e_cs = discord.PartialEmoji(name="csprime", id=1561307515067834428)
+    options = [discord.SelectOption(label="Account Prime", value="CS2 Account Prime", description="Konto CS2 ze statusem Prime", emoji=e_cs)]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
+    embed = discord.Embed(title=f"🎯 VELOX SHOP × COUNTER-STRIKE 2 {e_cs}", description="Wybierz ofertę Prime z listy poniżej:", color=discord.Color.blue())
+    embed.set_image(url=BANNER)
+    await inter.channel.send(embed=embed, view=v)
+    await inter.followup.send("Gotowe!", ephemeral=True)
+
+@bot.tree.command(name="setup_shop", description="Sklep / Dodatki")
+@app_commands.checks.has_permissions(administrator=True)
+async def sshop(inter: discord.Interaction):
+    await inter.response.defer(ephemeral=True)
+    options = [
+        discord.SelectOption(label="Citizen", value="Citizen Custom", emoji="🌅"),
+        discord.SelectOption(label="Soundpacks", value="Soundpacks", emoji="🔊")
+    ]
+    v = discord.ui.View(timeout=None)
+    v.add_item(ShopSelect(placeholder="❌ × Purchase Product | Zakup Produkt", options=options))
+    embed = discord.Embed(title="🛒 VELOX SHOP × ADDONS", description="Wybierz dodatek z listy poniżej:", color=discord.Color.blue())
+    embed.set_image(url=BANNER)
+    await inter.channel.send(embed=embed, view=v)
+    await inter.followup.send("Gotowe!", ephemeral=True)
+
+@bot.tree.command(name="feedback", description="Opinia")
+@app_commands.checks.has_permissions(administrator=True)
+async def fb(inter: discord.Interaction):
+    await inter.response.send_message("⭐ Dziękujemy za zakupy w Velox Shop!", ephemeral=True)
+
+@bot.tree.command(name="drop", description="Drop")
+async def dp(inter: discord.Interaction):
+    if inter.channel_id != DROP_CH:
+        await inter.response.send_message("❌ Zły kanał!", ephemeral=True)
+        return
+    if random.randint(1, 100) <= 5:
+        await inter.response.send_message(f"🎉 {inter.user.mention} wygrał 20% zniżki w Velox Shop!")
+    else:
+        await inter.response.send_message(f"⚡ Niestety {inter.user.mention}, spróbuj ponownie.")
+
+bot.run(TOKEN)
