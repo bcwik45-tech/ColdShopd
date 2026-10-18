@@ -19,6 +19,16 @@ CAT_SUPPORT = 1539002224007712911
 BANNER = "http://googleusercontent.com/generated_animated_image/15959043500870823950"
 CHEAT_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561373946010669137/a444a5e8-9b52-4784-a325-e81795221c2d.png"
 SPOOFER_BANNER = "https://cdn.discordapp.com/attachments/1541276042788864080/1561390239581339658/Szpiegowski_emblemat_SPOOFER.png"
+LEGIT_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561423524642562148/3c6b5668-0247-430b-bf68-7c9b66d0d59d.png"
+BUNDLE_BANNER = "https://cdn.discordapp.com/attachments/1556342431903911966/1561424557225812079/7ac5534e-a054-4862-96f3-e0c62be3e27d.png"
+
+E_ECHO = "<:echofun:1561389082775388365>"
+E_AMBANI = "<:ambani:1561389373378011207>"
+E_WORM = "<:worm:1561389638088790108>"
+
+PE_ECHO = discord.PartialEmoji(name="echofun", id=1561389082775388365)
+PE_AMBANI = discord.PartialEmoji(name="ambani", id=1561389373378011207)
+PE_WORM = discord.PartialEmoji(name="worm", id=1561389638088790108)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -207,87 +217,24 @@ async def sb(inter: discord.Interaction):
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(options))
     embed = discord.Embed(title="Velox Products x PREMIUM", description="Wybierz produkt z listy poniżej:", color=discord.Color.blue())
-    embed.set_image(url=BANNER)
+    embed.set_image(url=BUNDLE_BANNER)
     await inter.response.send_message(embed=embed, view=v)
 
 @bot.tree.command(name="setup_cheats", description="Panel FiveM Cheats")
 @app_commands.checks.has_permissions(administrator=True)
 async def scheats(inter: discord.Interaction):
     options = [
-        discord.SelectOption(label="Echo.fun", value="Echo.fun"),
-        discord.SelectOption(label="Ambani", value="Ambani"),
-        discord.SelectOption(label="Worm", value="Worm")
+        discord.SelectOption(label="Echo.fun", value="Echo.fun", description="Echo.fun Cheat", emoji=PE_ECHO),
+        discord.SelectOption(label="Ambani", value="Ambani", description="Ambani Cheat", emoji=PE_AMBANI),
+        discord.SelectOption(label="Worm", value="Worm", description="Worm Cheat", emoji=PE_WORM)
     ]
     v = discord.ui.View(timeout=None)
     v.add_item(ShopSelect(options))
-    embed = discord.Embed(title="Velox Products x FiveM Cheats", description="Wybierz cheat z listy poniżej:", color=discord.Color.blue())
+    desc = "Cheats available from us:\n> • Echo.fun\n> • Ambani\n> • Worm\n\nSelect the cheat you are interested in."
+    embed = discord.Embed(title="Velox Products x FiveM Cheats", description=desc, color=discord.Color.blue())
     embed.set_image(url=CHEAT_BANNER)
     await inter.response.send_message(embed=embed, view=v)
 
 @bot.tree.command(name="setup_spoofer", description="Panel FiveM Spoofer")
 @app_commands.checks.has_permissions(administrator=True)
-async def sspoof(inter: discord.Interaction):
-    options = [discord.SelectOption(label="Echo.fun", value="Echo.fun")]
-    v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(options))
-    embed = discord.Embed(title="Velox Products x FiveM Spoofer", description="Wybierz spoofer z listy poniżej:", color=discord.Color.blue())
-    embed.set_image(url=SPOOFER_BANNER)
-    await inter.response.send_message(embed=embed, view=v)
-
-@bot.tree.command(name="setup_vpn", description="Panel VPN")
-@app_commands.checks.has_permissions(administrator=True)
-async def svpn(inter: discord.Interaction):
-    options = [
-        discord.SelectOption(label="IP Vanish", value="IP Vanish"),
-        discord.SelectOption(label="NexHub", value="NexHub")
-    ]
-    v = discord.ui.View(timeout=None)
-    v.add_item(ShopSelect(options))
-    embed = discord.Embed(title="VPN Panel", description="Wybierz VPN z listy poniżej:", color=discord.Color.blue())
-    embed.set_image(url=BANNER)
-    await inter.response.send_message(embed=embed, view=v)
-
-@bot.tree.command(name="setup_legitchecks", description="Panel legit check")
-@app_commands.checks.has_permissions(administrator=True)
-async def sl(inter: discord.Interaction):
-    embed = discord.Embed(title="CZY JESTESMY LEGIT?", description="Zaznacz reakcję pod wiadomością.", color=discord.Color.blue())
-    embed.set_image(url=BANNER)
-    await inter.response.send_message(embed=embed, view=LegitView())
-
-@bot.tree.command(name="say", description="Wysyła wiadomosc")
-@app_commands.checks.has_permissions(administrator=True)
-async def say(inter: discord.Interaction, message: str):
-    await inter.channel.send(message)
-    await inter.response.send_message("Wyslano wiadomosc!", ephemeral=True)
-
-@bot.tree.command(name="bandc", description="Banowanie uzytkownika")
-@app_commands.checks.has_permissions(ban_members=True)
-@app_commands.describe(user="Uzytkownik", reason="Powod")
-async def bandc(inter: discord.Interaction, user: discord.Member, reason: str = "Brak powodu"):
-    await inter.guild.ban(user, reason=reason)
-    await inter.response.send_message(f"Zbanowano użytkownika {user}.", ephemeral=True)
-
-@bot.tree.command(name="unban", description="Odbanowanie uzytkownika")
-@app_commands.checks.has_permissions(ban_members=True)
-@app_commands.describe(user_id="ID uzytkownika")
-async def unban(inter: discord.Interaction, user_id: str):
-    user = await bot.fetch_user(int(user_id))
-    await inter.guild.unban(user)
-    await inter.response.send_message(f"Odbanowano użytkownika `{user}`.", ephemeral=True)
-
-@bot.tree.command(name="feedback", description="Opinia")
-@app_commands.checks.has_permissions(administrator=True)
-async def fb(inter: discord.Interaction):
-    await inter.response.send_message("Dziekujemy za zakupy w Velox Shop!", ephemeral=True)
-
-@bot.tree.command(name="drop", description="Drop")
-async def dp(inter: discord.Interaction):
-    if inter.channel_id != DROP_CH:
-        await inter.response.send_message("Zly kanal!", ephemeral=True)
-        return
-    if random.randint(1, 100) <= 5:
-        await inter.response.send_message(f"Gratulacje {inter.user.mention}, wygrales 20% znizki!")
-    else:
-        await inter.response.send_message(f"Niestety {inter.user.mention}, spróbuj ponownie.")
-
-bot.run(TOKEN)
+async def sspoof(inter: discord.Interaction
